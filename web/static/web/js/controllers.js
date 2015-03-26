@@ -12,3 +12,9 @@ cordexManager.controller('submissionsListCtrl', function ($scope) {
 		{'experiment_name': 'CORDEX-ESD s1t1', 'notes': 'Just testing 2'}
 	];
 });
+
+cordexManager.controller('experimentsListCtrl', function ($scope, $http) {
+	$http.get('/api/experiments/?format=json').success(function(data) {
+		$scope.experiments = data;
+	});
+});

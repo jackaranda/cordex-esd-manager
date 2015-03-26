@@ -26,6 +26,7 @@ class ExperimentAdmin(admin.ModelAdmin):
 	fields = ('project', 'meta', 'parent', 'short_name', 'description', 'created', 'created_by', 'modified')
 	readonly_fields = ('created', 'modified')
 	list_display = ('project', 'parent', 'meta', 'short_name', 'description', 'created', 'created_by', 'modified')
+	list_display_links = ('short_name',)
 	inlines = (DatasetInline, TimePeriodInline, )
 
 class DatasetAdmin(admin.ModelAdmin):

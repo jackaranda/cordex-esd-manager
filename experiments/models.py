@@ -53,7 +53,7 @@ class Experiment(models.Model):
 
 	project = models.ForeignKey(Project, null=True)
 
-	parent = models.ForeignKey('Experiment', null=True)
+	parent = models.ForeignKey('Experiment', null=True, related_name='children')
 
 	created_by = models.ForeignKey(Profile)
 	created = models.DateTimeField(auto_now_add=True)
@@ -82,3 +82,6 @@ class ExperimentTimePeriods(models.Model):
 	experiment = models.ForeignKey(Experiment)
 	timeperiod = models.ForeignKey(TimePeriod)
 	category = models.CharField(max_length=20, choices=TIMEPERIOD_CATEGORIES, default='', blank=True)
+
+	def __unicode__(self):
+		return "{} ({})".format(self.timeperiod, self.category)

@@ -1,6 +1,12 @@
 from rest_framework import serializers
-from experiments.models import Experiment, Dataset
+from experiments.models import TimePeriod, Experiment, Dataset
 
+
+class TimePeriodSerializer(serializers.HyperlinkedModelSerializer):
+
+	class Meta:
+		model = TimePeriod
+		fields = ('begin', 'end')
 
 class ExperimentSerializer(serializers.HyperlinkedModelSerializer):
 
@@ -8,7 +14,7 @@ class ExperimentSerializer(serializers.HyperlinkedModelSerializer):
 
 	class Meta:
 		model = Experiment
-		fields = ('meta', 'short_name', 'description', 'created_by', 'created', 'modified', 'datasets')
+		fields = ('meta', 'parent', 'children', 'short_name', 'description', 'created_by', 'created', 'modified', 'timeperiods', 'datasets')
 
 class DatasetSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
