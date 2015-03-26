@@ -12,6 +12,9 @@ class Profile(models.Model):
 	city = models.CharField(max_length=100, null=True)
 	country = models.CharField(max_length=3, null=True)
 
+	def __unicode__(self):
+		return '{} {}'.format(self.user_id.first_name, self.user_id.last_name)
+
 	
 
 

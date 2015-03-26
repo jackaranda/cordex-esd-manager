@@ -16,6 +16,9 @@ class Dataset(models.Model):
 	category = models.CharField(max_length=20, choices=DATASET_CATEGORIES, default='', blank=True)
 	source_url = models.URLField()
 
+	def __unicode__(self):
+		return self.short_name
+
 
 class Experiment(models.Model):
 
@@ -28,10 +31,17 @@ class Experiment(models.Model):
 
 	datasets = models.ManyToManyField(Dataset, through='ExperimentDatasets')
 
+	def __unicode__(self):
+		return self.short_name
+
+
 class ExperimentDatasets(models.Model):
 
 	experiment = models.ForeignKey(Experiment)
 	dataset = models.ForeignKey(Dataset)
 	category = models.CharField(max_length=20, choices=EXPERIMENT_DATASET_CATEGORIES, default='', blank=True)
+
+	def __unicode__(self):
+		return "{} ({})".format(self.dataset, self.category)
 
 
