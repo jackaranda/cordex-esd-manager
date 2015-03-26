@@ -81,7 +81,7 @@ DATABASES = {
         'NAME': 'cordex_esd_manager',
         'USER': 'postgres',                      # Not used with sqlite3.
         'PASSWORD': 'Dumbo&2684',                  # Not used with sqlite3.
-        'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
+        'HOST': '127.0.0.1',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }

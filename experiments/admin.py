@@ -23,9 +23,9 @@ class ProjectAdmin(admin.ModelAdmin):
 
 class ExperimentAdmin(admin.ModelAdmin):
 
-	fields = ('project', 'meta', 'short_name', 'description', 'created', 'created_by', 'modified')
-	readonly_fields = ('created', 'created_by', 'modified')
-	list_display = ('project', 'meta', 'short_name', 'description', 'created', 'created_by', 'modified')
+	fields = ('project', 'meta', 'parent', 'short_name', 'description', 'created', 'created_by', 'modified')
+	readonly_fields = ('created', 'modified')
+	list_display = ('project', 'parent', 'meta', 'short_name', 'description', 'created', 'created_by', 'modified')
 	inlines = (DatasetInline, TimePeriodInline, )
 
 class DatasetAdmin(admin.ModelAdmin):
