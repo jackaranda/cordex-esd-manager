@@ -3,11 +3,12 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 
-from submissions import views
+from experiments import views
 
 
 router = routers.DefaultRouter()
 router.register(r'datasets', views.DatasetViewSet)
+router.register(r'experiments', views.ExperimentViewSet)
 
 
 

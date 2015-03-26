@@ -11,9 +11,9 @@ FREQUENCIES = (('day', 'daily data'), ('month', 'monthly data'))
 
 class Dataset(models.Model):
 
-	category = models.CharField(max_length=20, choices=DATASET_CATEGORIES, default='', blank=True)
 	short_name = models.CharField(max_length=50)
 	description = models.TextField()
+	category = models.CharField(max_length=20, choices=DATASET_CATEGORIES, default='', blank=True)
 	source_url = models.URLField()
 
 

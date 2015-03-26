@@ -1,9 +1,14 @@
 from rest_framework import serializers
-from submissions.models import Dataset
+from experiments.models import Experiment, Dataset
 
+
+class ExperimentSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Experiment
+        fields = ('short_name', 'description', 'created_by', 'created', 'modified', 'datasets')
 
 class DatasetSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Dataset
-        fields = ('url', 'category', 'short_name', 'description', 'source_url')
+        fields = ('short_name', 'description', 'category', 'source_url')
 
