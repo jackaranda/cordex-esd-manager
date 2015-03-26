@@ -39,6 +39,8 @@ class Experiment(models.Model):
 
 	project = models.ForeignKey(Project, null=True)
 
+	parent = models.ForeignKey('Experiment', null=True)
+
 	created_by = models.ForeignKey(Profile)
 	created = models.DateTimeField(auto_now_add=True)
 	modified = models.DateTimeField(auto_now=True)
