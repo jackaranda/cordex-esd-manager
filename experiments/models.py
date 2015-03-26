@@ -7,7 +7,18 @@ EXPERIMENT_DATASET_CATEGORIES = (('predictor', 'Predictor'), ('predictand', 'Pre
 FREQUENCIES = (('day', 'daily data'), ('month', 'monthly data'))
 
 
-# Create your models here.
+class Project(models.Model):
+
+	short_name = models.CharField(max_length=50)
+	description = models.TextField()
+	url = models.URLField(default="")
+
+	created_by = models.ForeignKey(Profile, null=True)
+	created = models.DateTimeField(auto_now_add=True)
+	modified = models.DateTimeField(auto_now=True)
+
+	def __unicode__(self):
+		return self.short_name
 
 class Dataset(models.Model):
 
@@ -24,6 +35,9 @@ class Experiment(models.Model):
 
 	short_name = models.CharField(max_length=50, default='')
 	description = models.TextField()
+	meta = models.BooleanField(default=False)
+
+	project = models.ForeignKey(Project, null=True)
 
 	created_by = models.ForeignKey(Profile)
 	created = models.DateTimeField(auto_now_add=True)
