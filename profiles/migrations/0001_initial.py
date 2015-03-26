@@ -16,6 +16,9 @@ class Migration(migrations.Migration):
             name='Profile',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('institution', models.CharField(max_length=100, null=True)),
+                ('city', models.CharField(max_length=100, null=True)),
+                ('country', models.CharField(max_length=3, null=True)),
                 ('user_id', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
             options={

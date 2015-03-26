@@ -40,7 +40,8 @@ INSTALLED_APPS = (
     'web',
     'rest_framework',
     'profiles',
-    'submissions'
+    'experiments',
+    'submissions',
 )
 
 MIDDLEWARE_CLASSES = (
