@@ -55,7 +55,7 @@ class Experiment(models.Model):
 
 	project = models.ForeignKey(Project, null=True)
 
-	parent = models.ForeignKey('Experiment', null=True, related_name='children')
+	parent = models.ForeignKey('Experiment', null=True, blank=True, related_name='children')
 
 	created_by = models.ForeignKey(Profile)
 	created = models.DateTimeField(auto_now_add=True)
@@ -64,6 +64,13 @@ class Experiment(models.Model):
 	datasets = models.ManyToManyField(Dataset, through='ExperimentDatasets')
 
 	timeperiods = models.ManyToManyField(TimePeriod, through='ExperimentTimePeriods')
+
+	def fullname(self):
+		if not self.meta and self.parent:
+			return "{} | {} - {}".format(self.project, self.parent.title, self.title)
+		else:
+			return "{} | {}".format(self.project, self.title)
+
 
 	def __unicode__(self):
 		return self.title
