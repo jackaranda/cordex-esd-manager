@@ -14,10 +14,10 @@ class ExperimentSerializer(serializers.HyperlinkedModelSerializer):
 
 	class Meta:
 		model = Experiment
-		fields = ('meta', 'parent', 'children', 'short_name', 'description', 'created_by', 'created', 'modified', 'timeperiods', 'datasets')
+		fields = ('meta', 'parent', 'children', 'title', 'description', 'created_by', 'created', 'modified', 'timeperiods', 'datasets')
 
 class DatasetSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Dataset
-        fields = ('short_name', 'description', 'category', 'source_url')
+        fields = ('title', 'description', 'category', 'source_url')
 

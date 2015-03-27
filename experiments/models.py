@@ -12,8 +12,7 @@ FREQUENCIES = (('day', 'daily data'), ('month', 'monthly data'))
 
 class TimePeriod(models.Model):
 
-	short_name =models.CharField(max_length=50, default="", blank=True)
-
+	short_name = models.CharField(max_length=50, default="", blank=True)
 	begin = models.DateTimeField(default=datetime.datetime(1900,1,1))
 	end = models.DateTimeField(default=datetime.datetime(1999,12,31))
 
@@ -23,7 +22,8 @@ class TimePeriod(models.Model):
 
 class Project(models.Model):
 
-	short_name = models.CharField(max_length=50)
+	slug = models.SlugField(max_length=50)
+	title = models.CharField(max_length=50, default='')
 	description = models.TextField()
 	url = models.URLField(default="")
 
@@ -32,22 +32,24 @@ class Project(models.Model):
 	modified = models.DateTimeField(auto_now=True)
 
 	def __unicode__(self):
-		return self.short_name
+		return self.title
 
 class Dataset(models.Model):
 
-	short_name = models.CharField(max_length=50)
+	slug = models.SlugField(max_length=50)
+	title = models.CharField(max_length=50, default='')
 	description = models.TextField()
 	category = models.CharField(max_length=20, choices=DATASET_CATEGORIES, default='', blank=True)
 	source_url = models.URLField()
 
 	def __unicode__(self):
-		return self.short_name
+		return self.title
 
 
 class Experiment(models.Model):
 
-	short_name = models.CharField(max_length=50, default='')
+	slug = models.SlugField(max_length=50)
+	title = models.CharField(max_length=50, default='')
 	description = models.TextField()
 	meta = models.BooleanField(default=False)
 
@@ -64,7 +66,7 @@ class Experiment(models.Model):
 	timeperiods = models.ManyToManyField(TimePeriod, through='ExperimentTimePeriods')
 
 	def __unicode__(self):
-		return self.short_name
+		return self.title
 
 
 class ExperimentDatasets(models.Model):

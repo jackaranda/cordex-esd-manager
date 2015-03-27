@@ -15,24 +15,29 @@ class DatasetInline(admin.TabularInline):
 
 	model = ExperimentDatasets
 
+
 class ProjectAdmin(admin.ModelAdmin):
 	
-	fields = ('short_name', 'description')
-	list_display = ('short_name', 'description')
+	fields = ('title', 'slug', 'description')
+	list_display = ('title', 'description')
+	prepopulated_fields = {"slug": ("title",)}
 
 
 class ExperimentAdmin(admin.ModelAdmin):
 
-	fields = ('project', 'meta', 'parent', 'short_name', 'description', 'created', 'created_by', 'modified')
+	fields = ('project', 'meta', 'parent', 'title', 'slug', 'description', 'created', 'created_by', 'modified')
 	readonly_fields = ('created', 'modified')
-	list_display = ('project', 'parent', 'meta', 'short_name', 'description', 'created', 'created_by', 'modified')
-	list_display_links = ('short_name',)
+	list_display = ('project', 'parent', 'meta', 'title', 'description', 'created', 'created_by', 'modified')
+	list_display_links = ('title',)
+	prepopulated_fields = {"slug": ("title",)}
 	inlines = (DatasetInline, TimePeriodInline, )
 
 class DatasetAdmin(admin.ModelAdmin):
 
-	fields = ('short_name', 'description', 'category', 'source_url')
-	list_display = ('short_name', 'description', 'category', 'source_url')
+	fields = ('title', 'slug', 'description', 'category', 'source_url')
+	list_display = ('title', 'description', 'category', 'source_url')
+	prepopulated_fields = {"slug": ("title",)}
+
 
 admin.site.register(TimePeriod, TimePeriodAdmin)
 admin.site.register(Project, ProjectAdmin)
