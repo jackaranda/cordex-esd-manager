@@ -9,9 +9,13 @@ FREQUENCIES = (('day', 'daily data'), ('month', 'monthly data'))
 
 class Model(models.Model):
 
-	name = models.CharField(max_length=50, default="")
+	slug = models.SlugField()
+	title  = models.CharField(max_length=50, default="")
 	contact = models.ForeignKey(Profile)
 	description = models.TextField(default="", blank=True)
+
+	def __unicode__(self):
+		return self.title
 
 class Variable(models.Model):
 
@@ -37,10 +41,13 @@ class Submission(models.Model):
 	archive_path = models.CharField(max_length=500, default='', blank=True)
 	archive_filename = models.CharField(max_length=500, default='', blank=True)
 
+	def __unicode__(self):
+		return "{} | {} version {}".format(self.model, self.experiment, self.version)
+
 class Upload(models.Model):
 
 	timestamp = models.DateTimeField(null=True)
-	submission = models.ForeignKey(Submission)
+	submission = models.ForeignKey(Submission, related_name='uploads')
 
 	format = models.CharField(max_length=10, choices=FILE_FORMATS, default='txt')
 	mode = models.CharField(max_length=10, choices=SUBMISSION_MODES, default='POST')
