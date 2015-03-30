@@ -3,13 +3,17 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 
-from experiments import views
+from experiments import views as experiment_views
+from submissions import views as submission_views
 
 
 router = routers.DefaultRouter()
-router.register(r'timeperiods', views.TimePeriodViewSet)
-router.register(r'datasets', views.DatasetViewSet)
-router.register(r'experiments', views.ExperimentViewSet)
+router.register(r'timeperiods', experiment_views.TimePeriodViewSet)
+router.register(r'datasets', experiment_views.DatasetViewSet)
+router.register(r'experiments', experiment_views.ExperimentViewSet)
+
+router.register(r'models', submission_views.ModelViewSet)
+router.register(r'submissions', submission_views.SubmissionViewSet)
 
 
 
