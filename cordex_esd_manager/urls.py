@@ -14,6 +14,7 @@ router.register(r'experiments', experiment_views.ExperimentViewSet)
 
 router.register(r'models', submission_views.ModelViewSet)
 router.register(r'submissions', submission_views.SubmissionViewSet)
+router.register(r'uploads', submission_views.UploadViewSet)
 
 
 
@@ -24,6 +25,7 @@ urlpatterns = patterns('',
 
     #url(r'^$', 'web.views.index', name='index'),
     url(r'^experiments', 'web.views.experiments', name='experiments'),
+    url(r'^submissions', 'web.views.submissions', name='submissions'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),

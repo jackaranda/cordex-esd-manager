@@ -6,11 +6,11 @@ cordexManager.config(function($interpolateProvider) {
   $interpolateProvider.endSymbol('}]}');
 });
 
-cordexManager.controller('submissionsListCtrl', function ($scope) {
-	$scope.submissions = [
-		{'experiment_name': 'CORDEX-ESD s1t1', 'notes': 'Just testing'},
-		{'experiment_name': 'CORDEX-ESD s1t1', 'notes': 'Just testing 2'}
-	];
+cordexManager.controller('submissionsListCtrl', function ($scope, $http) {
+	$http.get('/api/submissions/?format=json').success(function(data) {
+		$scope.submissions = data;
+	});
+
 });
 
 cordexManager.controller('experimentsListCtrl', function ($scope, $http) {

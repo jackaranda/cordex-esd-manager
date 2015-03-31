@@ -60,9 +60,9 @@
 
       <!-- Example row of columns -->
       <div class="row">
-        <div class="col-md-4" ng-repeat="submission in submissions">
-          <h2>{[{ submission.experiment_name }]}</h2>
-          <p>{[{ submission.notes }]}</p>
+        <div class="col-md-8" ng-repeat="submission in submissions">
+          <h3>{[{ submission.experiment_name }]} | {[{ submission.model_name }]}</h3>
+
           <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
         </div>
       </div>

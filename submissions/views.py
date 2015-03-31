@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from submissions.serializers import ModelSerializer, SubmissionSerializer
+from submissions.serializers import ModelSerializer, SubmissionSerializer, UploadSerializer
 from submissions.models import Model, Submission, Upload
 
 class ModelViewSet(viewsets.ModelViewSet):
@@ -17,3 +17,11 @@ class SubmissionViewSet(viewsets.ModelViewSet):
     """
     queryset = Submission.objects.all()
     serializer_class = SubmissionSerializer
+
+class UploadViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows upload to be viewed or edited
+    """
+    queryset = Upload.objects.all()
+    serializer_class = UploadSerializer
+
