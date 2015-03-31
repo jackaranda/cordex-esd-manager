@@ -6,14 +6,14 @@ from django.conf import settings
 
 class Profile(models.Model):
 
-	user_id = models.ForeignKey(settings.AUTH_USER_MODEL)
+	user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
 	institution = models.CharField(max_length=100, null=True)
 	city = models.CharField(max_length=100, null=True)
 	country = models.CharField(max_length=3, null=True)
 
 	def __unicode__(self):
-		return '{} {}'.format(self.user_id.first_name, self.user_id.last_name)
+		return '{} {}'.format(self.user.first_name, self.user.last_name)
 
 	
 
