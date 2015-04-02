@@ -19,6 +19,7 @@ class SubmissionSerializer(serializers.HyperlinkedModelSerializer):
 	model_name = serializers.StringRelatedField(read_only=True, source='model.title')
 	experiment = serializers.HyperlinkedRelatedField(queryset=Experiment.objects.filter(meta=False), view_name='experiment-detail')
 	experiment_name = serializers.StringRelatedField(read_only=True, source='experiment.title')
+	uploads = serializers.StringRelatedField(many=True, read_only=True, source='timestamp')
 
 	class Meta:
 		model = Submission
@@ -27,8 +28,9 @@ class SubmissionSerializer(serializers.HyperlinkedModelSerializer):
 class UploadSerializer(serializers.HyperlinkedModelSerializer):
 
 	submission = serializers.HyperlinkedRelatedField(queryset=Submission.objects.all(), view_name='submission-detail')
-	
+
 	class Meta:
 		model = Upload
-		fields = ('timestamp', 'submission', 'format', 'mode', 'path', 'filename',)
+		fields = ('timestamp', 'submission', 'format', 'mode', 'uploaded')
+
 

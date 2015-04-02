@@ -27,6 +27,8 @@ TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
 
 
+MEDIA_ROOT = '/home/cjack/work/projects/code/cordex-esd-manager/cordex_esd_manager/uploads/'
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -123,9 +125,9 @@ AUTHENTICATION_BACKENDS = (
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    #'DEFAULT_PERMISSION_CLASSES': [
+    #    'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    #]
 }
 
 # Linkedin Social Auth stuff

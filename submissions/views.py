@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from rest_framework import viewsets
+from rest_framework import views
+from rest_framework import parsers
+from rest_framework import mixins
 from submissions.serializers import ModelSerializer, SubmissionSerializer, UploadSerializer
 from submissions.models import Model, Submission, Upload
 
@@ -22,11 +25,27 @@ class SubmissionViewSet(viewsets.ModelViewSet):
     queryset = Submission.objects.all()
     serializer_class = SubmissionSerializer
 
-class UploadViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows upload to be viewed or edited
-    """
-    permission_classes = [IsOwnerOrReadOnly]
+#class UploadViewSet(viewsets.ModelViewSet):
+#    """
+#    API endpoint that allows upload to be viewed or edited
+#    """
+#    permission_classes = [IsOwnerOrReadOnly]
+#    queryset = Upload.objects.all()
+#    serializer_class = UploadSerializer
+
+class UploadView(viewsets.ModelViewSet):
+
+#    permission_classes = [IsOwnerOrReadOnly]
     queryset = Upload.objects.all()
     serializer_class = UploadSerializer
+    parser_classes = (parsers.FormParser, parsers.MultiPartParser)
+
+#    def post(self, request, filename):
+
+#        upload_file = request.data['file']
+
+#        with open('test', 'w') as target:
+#            for chunk in upload_file.chunks():
+#                target.write(chunk)
+
 

@@ -14,7 +14,7 @@ router.register(r'experiments', experiment_views.ExperimentViewSet)
 
 router.register(r'models', submission_views.ModelViewSet)
 router.register(r'submissions', submission_views.SubmissionViewSet)
-router.register(r'uploads', submission_views.UploadViewSet)
+router.register(r'uploads', submission_views.UploadView)
 
 
 
@@ -23,7 +23,7 @@ urlpatterns = patterns('',
     # url(r'^$', 'cordex_esd_manager.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    #url(r'^$', 'web.views.index', name='index'),
+    url(r'^$', 'web.views.index', name='index'),
     url(r'^experiments', 'web.views.experiments', name='experiments'),
     url(r'^submissions', 'web.views.submissions', name='submissions'),
     url(r'^admin/', include(admin.site.urls)),
