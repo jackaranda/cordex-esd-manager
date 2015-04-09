@@ -7,15 +7,35 @@
     <div class="container" ng-controller="experimentsListCtrl">
 
     <div class="row">
-      <h4>There are currently <strong>{[{ experiments.length }]}</strong> experiments published</h4>
+      <h4>There are currently <strong>{[{ meta_experiments.length }]}</strong> experiments published</h4>
     </div>
 
     <hr/>
 
-    <div class="row" ng-repeat="experiment in experiments">
+    <div class="row" ng-repeat="meta_experiment in meta_experiments">
           <div class="panel panel-default">
-            <div class="panel-heading">{[{ experiment.fullname }]}</div>
-            <div class="panel-body">{[{ experiment.description }]}</div>
+            <div class="panel-heading">{[{ meta_experiment.fullname }]}</div>
+            <div class="panel-body">{[{ meta_experiment.description }]}<hr/>
+                
+                <p>There are <strong>{[{ meta_experiment.experiments.length }]}</strong> subsidary experiments within this experiment</p>
+                
+                <div ng-repeat="experiment in meta_experiment.experiments">
+                
+                  <div class="panel panel-default">
+                    <div class="panel-heading">{[{ experiment.fullname }]}</div>
+                    <div class="panel-body">{[{ experiment.description }]}<br/>
+                      <hr/>
+                      <p>Datasets:</p>
+
+                      <div ng-repeat="dataset in experiment.datasets">
+                        <p>{[{ dataset.category }]} <strong>{[{ dataset.title }]}</strong> | {[{ dataset.description }]}</p>
+                        <p><a href="{[{ dataset.source_url }]}">{[{ dataset.source_url }]}</a></p>
+                      </div>
+                  </div>
+           
+                </div>
+
+            </div>
           </div>
       </div>
 

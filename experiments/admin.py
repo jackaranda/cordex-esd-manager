@@ -1,5 +1,5 @@
 from django.contrib import admin
-from experiments.models import TimePeriod, Project, Experiment, Dataset, ExperimentTimePeriods, ExperimentDatasets
+from experiments.models import TimePeriod, Project, MetaExperiment, Experiment, Dataset, ExperimentTimePeriods, ExperimentDatasets
 
 # Register your models here.
 
@@ -22,12 +22,19 @@ class ProjectAdmin(admin.ModelAdmin):
 	list_display = ('title', 'description')
 	prepopulated_fields = {"slug": ("title",)}
 
+class MetaExperimentAdmin(admin.ModelAdmin):
+
+	fields = ('project', 'title', 'slug', 'description', 'created', 'created_by', 'modified')
+	readonly_fields = ('created', 'modified')
+	list_display = ('title', 'description', 'created', 'created_by', 'modified')
+	list_display_links = ('title',)
+	prepopulated_fields = {"slug": ("title",)}
 
 class ExperimentAdmin(admin.ModelAdmin):
 
-	fields = ('project', 'meta', 'parent', 'title', 'slug', 'description', 'created', 'created_by', 'modified')
+	fields = ('meta', 'title', 'slug', 'description', 'created', 'created_by', 'modified')
 	readonly_fields = ('created', 'modified')
-	list_display = ('project', 'parent', 'meta', 'title', 'description', 'created', 'created_by', 'modified')
+	list_display = ('meta', 'title', 'description', 'created', 'created_by', 'modified')
 	list_display_links = ('title',)
 	prepopulated_fields = {"slug": ("title",)}
 	inlines = (DatasetInline, TimePeriodInline, )
@@ -41,6 +48,7 @@ class DatasetAdmin(admin.ModelAdmin):
 
 admin.site.register(TimePeriod, TimePeriodAdmin)
 admin.site.register(Project, ProjectAdmin)
+admin.site.register(MetaExperiment, MetaExperimentAdmin)
 admin.site.register(Experiment, ExperimentAdmin)
 admin.site.register(Dataset, DatasetAdmin)
 

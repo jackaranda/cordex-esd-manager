@@ -45,31 +45,44 @@ class Dataset(models.Model):
 	def __unicode__(self):
 		return self.title
 
+class MetaExperiment(models.Model):
+
+	slug = models.SlugField(max_length=50)
+	title = models.CharField(max_length=50, default='')
+	description = models.TextField()
+
+	project = models.ForeignKey(Project, null=True)
+
+	created_by = models.ForeignKey(Profile)
+	created = models.DateTimeField(auto_now_add=True)
+	modified = models.DateTimeField(auto_now=True)
+
+	def fullname(self):
+		return "{} | {}".format(self.project, self.title)
+
+	def __unicode__(self):
+		return self.title
+
 
 class Experiment(models.Model):
 
 	slug = models.SlugField(max_length=50)
 	title = models.CharField(max_length=50, default='')
 	description = models.TextField()
-	meta = models.BooleanField(default=False)
 
-	project = models.ForeignKey(Project, null=True)
+	#project = models.ForeignKey(Project, null=True)
 
-	parent = models.ForeignKey('Experiment', null=True, blank=True, related_name='children')
+	meta = models.ForeignKey('MetaExperiment', null=True, blank=True, related_name='experiments')
 
 	created_by = models.ForeignKey(Profile)
 	created = models.DateTimeField(auto_now_add=True)
 	modified = models.DateTimeField(auto_now=True)
 
 	datasets = models.ManyToManyField(Dataset, through='ExperimentDatasets')
-
 	timeperiods = models.ManyToManyField(TimePeriod, through='ExperimentTimePeriods')
 
 	def fullname(self):
-		if not self.meta and self.parent:
-			return "{} | {} - {}".format(self.project, self.parent.title, self.title)
-		else:
-			return "{} | {}".format(self.project, self.title)
+		return "{}".format(self.title)
 
 
 	def __unicode__(self):
@@ -83,7 +96,7 @@ class ExperimentDatasets(models.Model):
 	category = models.CharField(max_length=20, choices=EXPERIMENT_DATASET_CATEGORIES, default='', blank=True)
 
 	def __unicode__(self):
-		return "{} ({})".format(self.dataset, self.category)
+		return "{} - {} ({})".format(self.experiment, self.dataset, self.category)
 
 
 class ExperimentTimePeriods(models.Model):
@@ -93,4 +106,4 @@ class ExperimentTimePeriods(models.Model):
 	category = models.CharField(max_length=20, choices=TIMEPERIOD_CATEGORIES, default='', blank=True)
 
 	def __unicode__(self):
-		return "{} ({})".format(self.timeperiod, self.category)
+		return "{} - {} ({})".format(self.experiment, self.timeperiod, self.category)

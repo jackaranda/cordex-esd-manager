@@ -10,6 +10,7 @@ from submissions import views as submission_views
 router = routers.DefaultRouter()
 router.register(r'timeperiods', experiment_views.TimePeriodViewSet)
 router.register(r'datasets', experiment_views.DatasetViewSet)
+router.register(r'meta-experiments', experiment_views.MetaExperimentViewSet)
 router.register(r'experiments', experiment_views.ExperimentViewSet)
 
 router.register(r'models', submission_views.ModelViewSet)
