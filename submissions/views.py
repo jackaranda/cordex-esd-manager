@@ -5,6 +5,7 @@ from rest_framework import parsers
 from rest_framework import mixins
 from submissions.serializers import ModelSerializer, SubmissionSerializer, UploadSerializer
 from submissions.models import Model, Submission, Upload
+from profiles.models import Profile
 
 from rest_framework import permissions
 from submissions.permissions import IsOwnerOrReadOnly
@@ -21,9 +22,17 @@ class SubmissionViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows submissions to be viewed or edited
     """
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated]
     queryset = Submission.objects.all()
     serializer_class = SubmissionSerializer
+
+    def get_queryset(self):
+        try:
+            user_profile = Profile.objects.get(user=self.request.user)
+        except:
+            return None
+
+        return Submission.objects.filter(owner=user_profile)
 
 #class UploadViewSet(viewsets.ModelViewSet):
 #    """
