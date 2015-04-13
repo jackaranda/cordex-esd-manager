@@ -22,15 +22,42 @@
                 <div ng-repeat="experiment in meta_experiment.experiments">
                 
                   <div class="panel panel-default">
-                    <div class="panel-heading">{[{ experiment.fullname }]}</div>
-                    <div class="panel-body">{[{ experiment.description }]}<br/>
-                      <hr/>
+                    <div class="panel-heading">{[{ experiment.fullname }]} id# = {[{ experiment.id }]} </div>
+                    <div class="panel-body">{[{ experiment.description }]}<hr/>
                       <p>Datasets:</p>
-
                       <div ng-repeat="dataset in experiment.datasets">
                         <p>{[{ dataset.category }]} <strong>{[{ dataset.title }]}</strong> | {[{ dataset.description }]}</p>
                         <p><a href="{[{ dataset.source_url }]}">{[{ dataset.source_url }]}</a></p>
                       </div>
+
+                      <hr/>
+
+                      <div ng-controller="submissionsListCtrl">
+                        {[{ submissions_filtered.length }]} submissions already submitted to this experiment:
+                        <div ng-repeat="submission in submissions_filtered = (submissions | filter: { experiment:experiment.id}) ">
+                          <div>submission id {[{ submission.id }]} experiment: {[{ submission.experiment }]} </div>
+                        </div>
+
+                      </div>
+
+                      <strong>Create a submission to this experiment</strong>
+                      <form action="{% url 'submission-list' %}" method='POST'>
+                        {% csrf_token %}
+                        Which model was used to produce the results for this submission? 
+                        <select name="model">
+                          {% for model in user_models %}
+                          <option value="{{ model.id }}">{{ model.title }}</option>
+                          {% endfor %}
+                           
+                        </select>
+                        <br/>
+                        
+                        <input type="hidden" name="owner" value="{{ user_profile.id }}">
+                        <input type="hidden" name="experiment" value="3">
+                        <input type="hidden" name="version" value=1>
+                        <input type="submit" value="Create submission">
+
+                      </form>
                   </div>
            
                 </div>

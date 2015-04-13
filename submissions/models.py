@@ -41,7 +41,7 @@ class Submission(models.Model):
 	version = models.IntegerField(default=1)
 
 	created = models.DateTimeField(auto_now_add=True)
-	modified = models.DateTimeField()
+	modified = models.DateTimeField(auto_now=True)
 	
 	notes = models.TextField(blank=True, default='')
 

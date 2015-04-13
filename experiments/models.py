@@ -16,6 +16,8 @@ class TimePeriod(models.Model):
 	begin = models.DateTimeField(default=datetime.datetime(1900,1,1))
 	end = models.DateTimeField(default=datetime.datetime(1999,12,31))
 
+	#exclude = models.ManyToManyField('TimePeriod')
+
 	def __unicode__(self):
 		return "{} - {}".format(self.begin, self.end)
 

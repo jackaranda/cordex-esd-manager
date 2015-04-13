@@ -21,6 +21,7 @@
     <script src="{% static 'web/js/jquery.min.js' %}"></script>
     <script src="{% static 'web/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'web/js/controllers.js' %}"></script>
+    <script src="{% static 'web/js/ckeditor.js' %}"></script>
 
 
   </head>
@@ -46,7 +47,7 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             {% if user.is_authenticated %}
-            <li><a href="#">{{ user.first_name }} {{ user.last_name }}</a></li>
+            <li><a href="#">{{ user.first_name }} {{ user.last_name }} #{{ user.id }}</a></li>
             {% else %}
             <li><a href="/login/linkedin/">Login through LinkedIn</a></li>
             {% endif %}
@@ -59,12 +60,10 @@
     <div class="container">
       {% block content %}{% endblock %}
     </div>
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="{% static 'web/js/bootstrap.min.js' %}"></script>
-
+<script>
+    // Turn off automatic editor creation first.
+    CKEDITOR.disableAutoInline = false;
+    CKEDITOR.inline( 'editor1' );
+</script>
   </body>
 </html>

@@ -9,7 +9,7 @@ class TimePeriodAdmin(admin.ModelAdmin):
 class TimePeriodInline(admin.TabularInline):
 
 	model = ExperimentTimePeriods
-	fields = ('category', 'timeperiod',)
+	fields = ('category', 'timeperiod')
 
 class DatasetInline(admin.TabularInline):
 

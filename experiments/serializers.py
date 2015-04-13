@@ -23,7 +23,7 @@ class ExperimentSerializer(serializers.HyperlinkedModelSerializer):
 
 	class Meta:
 		model = Experiment
-		fields = ('slug', 'title', 'meta', 'description', 'fullname', 'created_by', 'created', 'modified', 'timeperiods', 'datasets')
+		fields = ('id', 'slug', 'title', 'meta', 'description', 'fullname', 'created_by', 'created', 'modified', 'timeperiods', 'datasets')
 
 
 class MetaExperimentSerializer(serializers.HyperlinkedModelSerializer):
@@ -33,7 +33,7 @@ class MetaExperimentSerializer(serializers.HyperlinkedModelSerializer):
 
 	class Meta:
 		model = MetaExperiment
-		fields = ('slug', 'title', 'description', 'fullname', 'created_by', 'created', 'modified', 'experiments')
+		fields = ('id', 'slug', 'title', 'description', 'fullname', 'created_by', 'created', 'modified', 'experiments')
 
 
 
