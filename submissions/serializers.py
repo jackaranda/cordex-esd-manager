@@ -34,9 +34,9 @@ class SubmissionSerializer(serializers.ModelSerializer):
 		model = Submission
 
 
-class UploadSerializer(serializers.HyperlinkedModelSerializer):
+class UploadSerializer(serializers.ModelSerializer):
 
-	submission = serializers.HyperlinkedRelatedField(queryset=Submission.objects.all(), view_name='submission-detail')
+	#submission = serializers.HyperlinkedRelatedField(queryset=Submission.objects.all(), view_name='submission-detail')
 
 	class Meta:
 		model = Upload

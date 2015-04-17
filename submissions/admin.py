@@ -1,5 +1,5 @@
 from django.contrib import admin
-from submissions.models import Model, Variable, Submission, Upload
+from submissions.models import Model, Submission, Upload
 
 # Register your models here.
 
@@ -19,6 +19,5 @@ class SubmissionAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Model, ModelAdmin)
-admin.site.register(Variable)
 admin.site.register(Submission, SubmissionAdmin)
 admin.site.register(Upload)

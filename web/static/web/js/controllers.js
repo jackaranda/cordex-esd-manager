@@ -14,7 +14,12 @@ cordexManager.controller('submissionsListCtrl', function ($scope, $http) {
 });
 
 cordexManager.controller('experimentsListCtrl', function ($scope, $http) {
+	
+	$http.defaults.xsrfCookieName = 'csrftoken';
+	$http.defaults.xsrfHeaderName = 'X-CSRFToken';
+
 	$http.get('/api/meta-experiments/?format=json').success(function(data) {
 		$scope.meta_experiments = data;
 	});
+
 });

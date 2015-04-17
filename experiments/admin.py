@@ -1,5 +1,5 @@
 from django.contrib import admin
-from experiments.models import TimePeriod, Project, MetaExperiment, Experiment, Dataset, ExperimentTimePeriods, ExperimentDatasets
+from experiments.models import TimePeriod, Project, MetaExperiment, Experiment, Dataset, Variable, ExperimentTimePeriods, ExperimentDatasets, ExperimentVariables
 
 # Register your models here.
 
@@ -12,8 +12,14 @@ class TimePeriodInline(admin.TabularInline):
 	fields = ('category', 'timeperiod')
 
 class DatasetInline(admin.TabularInline):
-
 	model = ExperimentDatasets
+
+class VariableInline(admin.TabularInline):
+	model = ExperimentVariables
+
+
+class VariableAdmin(admin.ModelAdmin):
+	pass
 
 
 class ProjectAdmin(admin.ModelAdmin):
@@ -30,6 +36,7 @@ class MetaExperimentAdmin(admin.ModelAdmin):
 	list_display_links = ('title',)
 	prepopulated_fields = {"slug": ("title",)}
 
+
 class ExperimentAdmin(admin.ModelAdmin):
 
 	fields = ('meta', 'title', 'slug', 'description', 'created', 'created_by', 'modified')
@@ -37,7 +44,7 @@ class ExperimentAdmin(admin.ModelAdmin):
 	list_display = ('meta', 'title', 'description', 'created', 'created_by', 'modified')
 	list_display_links = ('title',)
 	prepopulated_fields = {"slug": ("title",)}
-	inlines = (DatasetInline, TimePeriodInline, )
+	inlines = (DatasetInline, TimePeriodInline, VariableInline, )
 
 class DatasetAdmin(admin.ModelAdmin):
 
@@ -51,5 +58,6 @@ admin.site.register(Project, ProjectAdmin)
 admin.site.register(MetaExperiment, MetaExperimentAdmin)
 admin.site.register(Experiment, ExperimentAdmin)
 admin.site.register(Dataset, DatasetAdmin)
+admin.site.register(Variable, VariableAdmin)
 
 

@@ -1,0 +1,45 @@
+{% extends "web/base.html" %}
+
+{% block title %}CORDEX Experiment Manager | Experiments {% endblock %}
+
+{% block content %}
+
+
+    <div class="row">
+      <h3><a href="{% url 'web-experiments' project.slug %}">{{ project.title }}</a></h3>
+      <h4>{{ meta_experiment.title }} > {{ experiment.title }}</h4><hr/>
+      <div>
+        <p>{{ experiment.description }}</p>
+        <p><a href="{% url 'web-submissions' project.slug meta_experiment.slug experiment.slug %}">Create a new submission for this experiment</a></p>
+      </div>
+    </div>
+     
+    <div class="row">
+
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">Experiment Datasets</div>
+            <div class="panel-body">
+              {% for dataset in datasets %}
+                  <strong>{{ dataset.category }}</strong> | {{ dataset.dataset.title }} ({{ dataset.dataset.category }})
+                  <p>{{ dataset.dataset.description }}</p>
+                  <p>Data source URL: <a href="{{ dataset.dataset.source_url }}">{{ dataset.dataset.source_url }}</a></p>
+              {% endfor %}
+            </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">Experiment Time Periods</div>
+            <div class="panel-body">
+              {% for timeperiod in timeperiods %}
+                  <p><strong>{{ timeperiod.category }}</strong> | {{ timeperiod.timeperiod.begin | date:'d M Y'}} to {{ timeperiod.timeperiod.end | date:'d M Y' }}</p>
+              {% endfor %}
+            </div>
+      </div>
+    </div>
+
+    </div> <!-- /container -->
+
+{% endblock %}

@@ -4,68 +4,39 @@
 
 {% block content %}
 
-    <div class="container" ng-controller="experimentsListCtrl">
+    <div class="row">
+    <h3>{{ project.title }}</h3>
+    {{ project.description }}
+    <p>
+    <a href="{{ project.url }}">Read more at : {{ project.url }}</a>
+    </p>
+    </div>
 
     <div class="row">
-      <h4>There are currently <strong>{[{ meta_experiments.length }]}</strong> experiments published</h4>
+      <h4>There are currently <strong>{{ meta_experiments|length }}</strong> experiments published under this project:</h4>
     </div>
 
     <hr/>
 
-    <div class="row" ng-repeat="meta_experiment in meta_experiments">
+    <div class="row">
+    {% for meta_experiment in meta_experiments %}
           <div class="panel panel-default">
-            <div class="panel-heading">{[{ meta_experiment.fullname }]}</div>
-            <div class="panel-body">{[{ meta_experiment.description }]}<hr/>
+            <div class="panel-heading">{{ meta_experiment.fullname }}</div>
+            <div class="panel-body">{{ meta_experiment.description }}<hr/>
+                <p>There are <strong>{{ meta_experiment.experiments.all | length }}</strong> subsidary experiments within this experiment</p>
                 
-                <p>There are <strong>{[{ meta_experiment.experiments.length }]}</strong> subsidary experiments within this experiment</p>
-                
-                <div ng-repeat="experiment in meta_experiment.experiments">
-                
+                {% for experiment in meta_experiment.experiments.all %}                
                   <div class="panel panel-default">
-                    <div class="panel-heading">{[{ experiment.fullname }]} id# = {[{ experiment.id }]} </div>
-                    <div class="panel-body">{[{ experiment.description }]}<hr/>
-                      <p>Datasets:</p>
-                      <div ng-repeat="dataset in experiment.datasets">
-                        <p>{[{ dataset.category }]} <strong>{[{ dataset.title }]}</strong> | {[{ dataset.description }]}</p>
-                        <p><a href="{[{ dataset.source_url }]}">{[{ dataset.source_url }]}</a></p>
-                      </div>
-
-                      <hr/>
-
-                      <div ng-controller="submissionsListCtrl">
-                        {[{ submissions_filtered.length }]} submissions already submitted to this experiment:
-                        <div ng-repeat="submission in submissions_filtered = (submissions | filter: { experiment:experiment.id}) ">
-                          <div>submission id {[{ submission.id }]} experiment: {[{ submission.experiment }]} </div>
-                        </div>
-
-                      </div>
-
-                      <strong>Create a submission to this experiment</strong>
-                      <form action="{% url 'submission-list' %}" method='POST'>
-                        {% csrf_token %}
-                        Which model was used to produce the results for this submission? 
-                        <select name="model">
-                          {% for model in user_models %}
-                          <option value="{{ model.id }}">{{ model.title }}</option>
-                          {% endfor %}
-                           
-                        </select>
-                        <br/>
-                        
-                        <input type="hidden" name="owner" value="{{ user_profile.id }}">
-                        <input type="hidden" name="experiment" value="3">
-                        <input type="hidden" name="version" value=1>
-                        <input type="submit" value="Create submission">
-
-                      </form>
+                    <div class="panel-heading">{{ experiment.fullname }} id# = {{ experiment.id }} </div>
+                    <div class="panel-body">{{ experiment.description }}<hr/>
+                    <a href="{% url 'web-experiment-detail' project.slug meta_experiment.slug experiment.slug  %}">see more</a>
+                    </div>
                   </div>
+                {% endfor %}
            
-                </div>
-
             </div>
           </div>
-      </div>
-
+      {% endfor %}
     </div> <!-- /container -->
 
 {% endblock %}

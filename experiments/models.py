@@ -6,6 +6,7 @@ import datetime
 
 DATASET_CATEGORIES = (('observed', 'Observed datasets'), ('re-analysis', 'Re-analysis datasets'), ('CMIP5', 'CMIP5 Models'))
 EXPERIMENT_DATASET_CATEGORIES = (('predictor', 'Predictor'), ('predictand', 'Predictand'))
+EXPERIMENT_VARIABLE_CATEGORIES = (('forcing', 'Forcing'), ('output', 'Output'))
 TIMEPERIOD_CATEGORIES = (('calibration', 'Calibration period'), ('validation', 'Validation period'))
 FREQUENCIES = (('day', 'daily data'), ('month', 'monthly data'))
 
@@ -20,6 +21,19 @@ class TimePeriod(models.Model):
 
 	def __unicode__(self):
 		return "{} - {}".format(self.begin, self.end)
+
+
+class Variable(models.Model):
+
+	short_name = models.SlugField(max_length=50, default="", blank=False, unique=True)
+	long_name = models.CharField(max_length=100, default="", blank=True)
+	standard_name = models.CharField(max_length=100, default="", blank=True)
+	units = models.CharField(max_length=15)
+
+	comments = models.TextField(blank=True, default="")
+
+	def __unicode__(self):
+		return self.standard_name
 
 
 class Project(models.Model):
@@ -82,6 +96,8 @@ class Experiment(models.Model):
 
 	datasets = models.ManyToManyField(Dataset, through='ExperimentDatasets')
 	timeperiods = models.ManyToManyField(TimePeriod, through='ExperimentTimePeriods')
+	variables = models.ManyToManyField(Variable, through='ExperimentVariables')
+
 
 	def fullname(self):
 		return "{}".format(self.title)
@@ -99,6 +115,16 @@ class ExperimentDatasets(models.Model):
 
 	def __unicode__(self):
 		return "{} - {} ({})".format(self.experiment, self.dataset, self.category)
+
+
+class ExperimentVariables(models.Model):
+
+	experiment = models.ForeignKey(Experiment)
+	variable = models.ForeignKey(Variable)
+	category = models.CharField(max_length=20, choices=EXPERIMENT_VARIABLE_CATEGORIES, default='', blank=True)
+
+	def __unicode__(self):
+		return "{} - {} ({})".format(self.experiment, self.variable, self.category)
 
 
 class ExperimentTimePeriods(models.Model):

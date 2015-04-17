@@ -8,7 +8,7 @@ from submissions.models import Model, Submission, Upload
 from profiles.models import Profile
 
 from rest_framework import permissions
-from submissions.permissions import IsOwnerOrReadOnly
+from submissions.permissions import UploadsIsOwnerOrReadOnly
 
 class ModelViewSet(viewsets.ModelViewSet):
     """
@@ -44,7 +44,7 @@ class SubmissionViewSet(viewsets.ModelViewSet):
 
 class UploadView(viewsets.ModelViewSet):
 
-#    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [UploadsIsOwnerOrReadOnly]
     queryset = Upload.objects.all()
     serializer_class = UploadSerializer
     parser_classes = (parsers.FormParser, parsers.MultiPartParser)

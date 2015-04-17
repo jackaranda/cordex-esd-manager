@@ -12,7 +12,7 @@ filestorage = FileSystemStorage('/home/cjack/work/projects/code/cordex-esd-manag
 
 def make_upload_path(instance, filename):
 
-	return "{}/{}/{}".format(instance.submission.model.slug, instance.submission.experiment.slug, filename)
+	return "{}/{}/uploaded/{}".format(instance.submission.model.slug, instance.submission.experiment.slug, filename)
 
 class Model(models.Model):
 
@@ -23,13 +23,6 @@ class Model(models.Model):
 
 	def __unicode__(self):
 		return self.title
-
-class Variable(models.Model):
-
-	short_name = models.CharField(max_length=20)
-	standard_name = models.CharField(max_length=50)
-	long_name = models.CharField(max_length=50)
-	units = models.CharField(max_length=20)
 
 class Submission(models.Model):
 
@@ -49,7 +42,7 @@ class Submission(models.Model):
 	archive_filename = models.CharField(max_length=500, default='', blank=True)
 
 	def __unicode__(self):
-		return "{} | {} version {}".format(self.model, self.experiment, self.version)
+		return "{} > {} ({}) version {}".format(self.experiment.meta, self.experiment, self.model, self.version)
 
 class Upload(models.Model):
 
@@ -63,5 +56,10 @@ class Upload(models.Model):
 	filename = models.CharField(max_length=500, default='', blank=True)
 
 	uploaded = models.FileField(null=True, storage=filestorage, upload_to=make_upload_path)
+
+	status = models.CharField(max_length=200, blank=True, default='unknown')
+
+	def __unicode__(self):
+		return self.uploaded.url
 
 
