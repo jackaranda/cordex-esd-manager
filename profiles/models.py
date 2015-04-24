@@ -8,9 +8,12 @@ class Profile(models.Model):
 
 	user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
-	institution = models.CharField(max_length=100, null=True)
-	city = models.CharField(max_length=100, null=True)
-	country = models.CharField(max_length=3, null=True)
+	institution = models.CharField(max_length=100, blank=True, null=True)
+	city = models.CharField(max_length=100, blank=True, null=True)
+	country = models.CharField(max_length=100, blank=True, null=True)
+
+	complete = models.BooleanField(default=False)
+	activated = models.BooleanField(default=False)
 
 	def __unicode__(self):
 		return '{} {}'.format(self.user.first_name, self.user.last_name)

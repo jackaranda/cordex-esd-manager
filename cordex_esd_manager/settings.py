@@ -113,10 +113,7 @@ STATIC_URL = '/static/'
 
 # python-social-auth backends
 AUTHENTICATION_BACKENDS = (
-    'social.backends.open_id.OpenIdAuth',
-    'social.backends.google.GoogleOpenId',
     'social.backends.google.GoogleOAuth2',
-    'social.backends.google.GoogleOAuth',
     'social.backends.linkedin.LinkedinOAuth',
     'social.backends.linkedin.LinkedinOAuth2',
     'django.contrib.auth.backends.ModelBackend',
@@ -133,6 +130,9 @@ REST_FRAMEWORK = {
     )
 }
 
+# General Social Auth stuff
+SOCIAL_AUTH_COMPLETE_URL_NAME  = 'socialauth_complete'
+
 # Linkedin Social Auth stuff
 SOCIAL_AUTH_LINKEDIN_KEY = '789k7081s8i0lw'
 SOCIAL_AUTH_LINKEDIN_SECRET = 'zkledww6gPwMxBXl'
@@ -147,3 +147,8 @@ SOCIAL_AUTH_LINKEDIN_EXTRA_DATA = [('id', 'id'),
                                    ('emailAddress', 'email_address'),
                                    ('headline', 'headline'),
                                    ('industry', 'industry')]
+
+# Google Oauth2 settings
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '81395824143-1a8gbl400l3hsns2m3879uor49endn8g.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'QWVnCbskn6IMxmYNEo7h7L_m'
+SOCIAL_UATH_GOOGLE_STATE_PARAMETER = False

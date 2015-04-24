@@ -46,7 +46,7 @@ class Submission(models.Model):
 
 class Upload(models.Model):
 
-	timestamp = models.DateTimeField(auto_now_add=True, default=None)
+	timestamp = models.DateTimeField(auto_now_add=True)
 	submission = models.ForeignKey(Submission, related_name='uploads')
 
 	format = models.CharField(max_length=10, choices=FILE_FORMATS, default='txt')

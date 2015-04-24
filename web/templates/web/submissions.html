@@ -14,7 +14,7 @@
         <div class="panel panel-default">
           <div class="panel-heading">{{ submission }}</div>
           <div class="panel-body">
-              <p>Created: {{ submission.created | date:'H:m D M Y' }} ( last modified: {{ submission.modified | date:'D M Y' }} )</p>
+              <p>Created: {{ submission.created | date:'H:m D M Y' }} ( last modified: {{ submission.modified | date:'H:m D M Y' }} )</p>
               {% if submission.notes %}
                 <p>Notes: {{ submission.notes }} </p>
               {% endif %}            
@@ -27,7 +27,7 @@
                 You have uploaded <strong>{{ submissions.uploads.all | length }}</strong> files to this submission
                 {% endif %}
               </p>
-
+              <div class="collapse">
               <table class="table table-striped table-condensed">
                 <tr>
                   <td><strong>File</strong></td>
@@ -46,7 +46,7 @@
                 </tr>
               {% endfor %}
               </table>
-
+              </div>
 
               <form class="upload-form" action="/api/uploads/" method="POST" enctype="multipart/form-data">
                   {% csrf_token %}

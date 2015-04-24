@@ -24,7 +24,7 @@ class VariableAdmin(admin.ModelAdmin):
 
 class ProjectAdmin(admin.ModelAdmin):
 	
-	fields = ('title', 'slug', 'description')
+	fields = ('title', 'slug', 'description', 'url')
 	list_display = ('title', 'description')
 	prepopulated_fields = {"slug": ("title",)}
 

@@ -1,0 +1,41 @@
+{% extends "web/base.html" %}
+
+{% block title %}CORDEX Experiment Manager | Profile {% endblock %}
+
+{% block content %}
+
+	<div class="row">
+		<h3>Name: {{ user.first_name }} {{ user.last_name}}</h3>
+	</div>
+
+	{% if not show_form %}
+		<div class="row">
+			<h4>Affiliation: {{ user_profile.institution }}</h4>
+			<h4>Country: {{ user_profile.country }}</h4>
+			<a class="btn btn-primary btn-sm" href="{% url 'web-profile' %}?edit" role="button">Edit profile</a>
+		</div>
+	{% else %}
+		<div class="row">
+			<form action="{% url 'web-profile' %}" method="POST">
+				{% csrf_token %}
+				 <div class="form-group">
+    				<label for="instution">Institution</label>
+    				<input type="text" name="institution" class="form-control" id="institution" placeholder="Enter your instution name" value="{{ user_profile.institution }}">
+    				<label for="country">Country</label>
+    				<input type="text" name="country" class="form-control" id="country" placeholder="Country name" value="{{ user_profile.country }}">
+ 				 </div>
+				<input type="submit" value="update details">
+			</form>
+
+		</div>
+	{% endif %}
+	<hr/>
+	<div class="row">
+		<h4>You have decribed <strong>{{ models|length }}</strong> models</h4>
+		Add a model description:
+		<form action="{% url 'rest:models' %}>
+		</form>
+	</div>
+
+
+{% endblock %}

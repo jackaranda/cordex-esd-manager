@@ -1,0 +1,22 @@
+{% extends "web/base.html" %}
+
+{% block title %}CORDEX Experiment Manager | Profile {% endblock %}
+
+{% block content %}
+
+	<div class="row">
+		<h3>Login to the submission manager</h3>
+		<p>
+		The Submission Manager does not require you to create a new login account but rather allows you to login using one of your existing online accounts.  A number of online platforms provide third party authentication services which provide this functionality.
+		</p>
+		<p>
+		What this means is that you can select an existing platform that you have an account with (options listed below) and grant the Submission Manager permission to authenticate your identify through that platform.  This saves you remembering yet another login and password combination.  It is completely secure.  It does not grant us access to your other accounts at all, only core information (your name and email address).  We also do not store any authentication information.
+		</p>
+		<h3>Authentication providers available</h3>
+		<p>
+		Please select the authentication platform you would like to use below.  This will take you to special page provided by each platform where you will have to grant Submission Manager permission to authenticate your identity through that platform.  You will only have to do this once.  The first time you do it you will also be redirected to a profile page on Submission Manager where we will ask you to fill in some other details about your who you are.  You can always go back and edit these details.
+		</p>
+		<center><a href="/login/linkedin"><img src='/static/web/images/Sign-in-Large---Default.png'></a></center>
+	</div>
+
+{% endblock %}

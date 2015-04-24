@@ -8,6 +8,7 @@ class SubmissionModelForm(ModelForm):
 
 	class Meta:
 		model = Model
+		fields = ['title', 'description']
 
 class SubmissionForm(ModelForm):
 

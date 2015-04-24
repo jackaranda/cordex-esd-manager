@@ -29,7 +29,13 @@ urlpatterns = patterns('',
     url(r'^projects/([-\w]+)/([-\w]+)/([-\w]+)$', 'web.views.experiment_detail', name='web-experiment-detail'), 
     url(r'^submissions/([-\w]+)/([-\w]+)/([-\w]+)$', 'web.views.submissions', name='web-submissions'),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^api/', include(router.urls)),
+
+    url(r'^api/', include(router.urls, namespace='rest')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
     url('', include('social.apps.django_app.urls', namespace='social')),
+    url(r'^accounts/login', 'web.views.login_view', name='web-login'),
+    url(r'^accounts/profile', 'web.views.user_profile', name='web-profile'),
+    url(r'^accounts/logout', 'web.views.logout_view', name='web-logout'),
+
 )
