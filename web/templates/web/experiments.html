@@ -29,7 +29,7 @@
                   <div class="panel panel-default">
                     <div class="panel-heading">{{ experiment.fullname }} id# = {{ experiment.id }} </div>
                     <div class="panel-body">{{ experiment.description }}<hr/>
-                    <a href="{% url 'web-experiment-detail' project.slug meta_experiment.slug experiment.slug  %}">see more</a>
+                    <a class="btn btn-primary btn-sm" href="{% url 'web-experiment-detail' project.slug meta_experiment.slug experiment.slug  %}">More details and/or submit results to this experiment</a>
                     </div>
                   </div>
                 {% endfor %}

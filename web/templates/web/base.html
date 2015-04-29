@@ -22,6 +22,9 @@
     <script src="{% static 'web/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'web/js/controllers.js' %}"></script>
 
+    <script src="{% static 'web/js/speakingurl.min.js' %}"></script>
+    <script src="{% static 'web/js/slugify.min.js' %}"></script>
+
 
   </head>
 
@@ -35,22 +38,26 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">Experiment Manager</a>
+          <a class="navbar-brand" href="{% url 'index' %}">Experiment Manager</a>
         </div>
         
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="/projects/cordex-esd/">Experiments</a></li>
-            <li><a href="/submissions/">Submissions</a></li>
+            <li><a href="{% url 'web-experiments' 'cordex-esd' %}">Experiments</a></li>
+
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'web-user-submissions' %}">Your Submissions</a></li>
+            {% endif %}
           </ul>
           <ul class="nav navbar-nav navbar-right">
 
             {% if user.is_authenticated %}
+              <p class="navbar-text">Logged in as </p>
               <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ user.first_name }} {{ user.last_name }} #{{ user.id }}<span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ user.first_name }} {{ user.last_name }} #{{ profile.id }}<span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
-                      <li><a href="/accounts/profile">View Profile</a></li>                    
-                      <li><a href="/accounts/logout">Logout</a></li>
+                      <li><a href="{% url 'web-profile' %}">View Profile</a></li>                    
+                      <li><a href="{% url 'web-logout' %}">Logout</a></li>
                   </ul>
               </li>
 
@@ -58,9 +65,9 @@
               <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Login <span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
-                      <li><a href="/accounts/login">about logging in</a></li>                    
-                      <li><a href="/login/linkedin">via LinkedIn</a></li>
-                      <li><a href="/login/google-oauth2">via Google</a></li>
+                      <li><a href="{% url 'web-login' %}">about logging in</a></li>                    
+                      <li><a href="{% url 'social:begin' 'linkedin' %}">via LinkedIn</a></li>
+                      <li><a href="{% url 'social:begin' 'google-oauth2' %}">via Google</a></li>
                   </ul>
               </li>
 

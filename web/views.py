@@ -87,6 +87,7 @@ def user_profile(request):
 	c['profile_form'] = profile_form
 	c['user_profile'] = profile
 	c['user_models'] = models
+	c['models_form'] = SubmissionModelForm()
 
 	return render(request, 'web/profile.html', c)
 
@@ -145,7 +146,7 @@ def experiment_detail(request, project_slug, meta_slug, slug):
 
 
 @login_required
-def submissions(request, project_slug, meta_slug, slug):
+def experiment_submissions(request, project_slug, meta_slug, slug):
 
 	try:
 		user_profile = Profile.objects.get(user=request.user)
@@ -199,6 +200,27 @@ def submissions(request, project_slug, meta_slug, slug):
 	c['form'] = SubmissionForm({'model':user_models[0]})
 	c['upload_form'] = UploadForm()
 	return render(request, 'web/submissions.html', c)
+
+
+@login_required
+def user_submissions(request):
+
+	try:
+		user_profile = Profile.objects.get(user=request.user)
+	except:
+		user_profile = None
+
+	user_models = Model.objects.filter(contact=user_profile)
+
+	user_submissions = Submission.objects.all().order_by('experiment', '-version')
+
+	c = {}
+	c['user_profile'] = user_profile
+	c['user_models'] = user_models
+	c['user_submissions'] = user_submissions
+	c['upload_form'] = UploadForm()
+
+	return render(request, 'web/user_submissions.html', c)
 
 
 def logout_view(request):

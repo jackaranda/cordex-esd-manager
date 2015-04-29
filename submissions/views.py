@@ -1,3 +1,5 @@
+import os
+
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework import views
@@ -56,5 +58,16 @@ class UploadView(viewsets.ModelViewSet):
 #        with open('test', 'w') as target:
 #            for chunk in upload_file.chunks():
 #                target.write(chunk)
+
+    def perform_destroy(self, instance):
+
+        # Delete the actual file
+        if instance.uploaded:
+            if os.path.isfile(instance.uploaded.path):
+                os.remove(instance.uploaded.path)
+
+        # Delete the database
+        instance.delete()
+
 
 
