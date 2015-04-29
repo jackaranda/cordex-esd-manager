@@ -107,8 +107,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
-
-
+STATICT_PATH = '/servers/cordex_manager_env/cordex_esd_manager/static'
 
 
 # python-social-auth backends
