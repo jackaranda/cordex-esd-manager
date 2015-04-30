@@ -10,37 +10,9 @@
     </div>
 
     <div class="row">
-          <div class="panel panel-default">
-            <div class="panel-heading">Create a new submission</div>
-            <div class="panel-body">
-              <form method="post" action="{% url 'web-experiment-submissions' project.slug meta_experiment.slug experiment.slug %}">
-              {% csrf_token %}
-                <p>Your submission will be under the {{ project }} project and for experiment {{ meta_experiment }} > {{ experiment }}</p>
-
-                <input type="hidden" name="project" value="{{ project.id }}">
-                <input type="hidden" name="experiment" value="{{ experiment.id }}">
-                <input type="hidden" name="owner" value="{{ user_profile.id }}">
-
-
-                <div class="form-group">
-                  <label for="{{ form.model.id_for_label }}">Select which of your saved models was used for this submission</label>
-                  {{ form.model }}{{ form.model.errors }} <a href="{% url 'web-profile' %}">Add models to your profile</a>
-
-                </div>
-
-                <div class="form-group">
-                  <label for="id_notes">Notes</label>
-                  <textarea id="id_notes" name="notes" class="form-control" placeholder="Enter any relevant notes to yourself or others"></textarea>
-                </div>
-                <input type="submit" class="form-control btn btn-primary" value="Create new submission">
-              </form>
-
-            </div>
-          </div>
-    </div>
-
-    <div class="row">
       <h4>You currently have <strong>{{ user_submissions|length }}</strong> submissions active for this experiment ({{ meta_experiment }} > {{ experiment }})</h4>
+      <a class="btn btn-warning" href="#add_submission">Add a new submission</a>
+      <hr/>
     </div>
 
     <div class="row">
@@ -98,6 +70,40 @@
         </div>
       {% endfor %}
     </div>
+
+
+    <div class="row">
+          <a id="add_submission"></a>
+          <div class="panel panel-warning">
+            <div class="panel-heading">Create a new submission</div>
+            <div class="panel-body">
+              <form method="post" action="{% url 'web-experiment-submissions' project.slug meta_experiment.slug experiment.slug %}">
+              {% csrf_token %}
+                <p>Your submission will be under the {{ project }} project and for experiment {{ meta_experiment }} > {{ experiment }}</p>
+
+                <input type="hidden" name="project" value="{{ project.id }}">
+                <input type="hidden" name="experiment" value="{{ experiment.id }}">
+                <input type="hidden" name="owner" value="{{ user_profile.id }}">
+
+
+                <div class="form-group">
+                  <label for="{{ form.model.id_for_label }}">Select which of your saved models was used for this submission</label>
+                  {{ form.model }}{{ form.model.errors }} <a href="{% url 'web-profile' %}">Add models to your profile</a>
+
+                </div>
+
+                <div class="form-group">
+                  <label for="id_notes">Notes</label>
+                  <textarea id="id_notes" name="notes" class="form-control" placeholder="Enter any relevant notes to yourself or others"></textarea>
+                </div>
+                <input type="submit" class="form-control btn btn-primary" value="Create new submission">
+              </form>
+
+            </div>
+          </div>
+    </div>
+
+
 
 
     <script>

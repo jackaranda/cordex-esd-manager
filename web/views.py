@@ -1,5 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
+
+from django.contrib import messages
+
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 
@@ -78,6 +81,8 @@ def user_profile(request):
 				profile = profile_form.save(commit=False)
 				profile.user = request.user
 				profile.save()
+				messages.add_message(request, messages.INFO, 'Your profile has been saved')
+
 
 		# If form has problems then we need to show it again
 		else:
@@ -88,6 +93,7 @@ def user_profile(request):
 	else:
 		profile_form = ProfileForm()
 
+	c['messages'] = messages.get_messages(request)
 	c['profile_form'] = profile_form
 	c['user_profile'] = profile
 	c['user_models'] = models
@@ -190,6 +196,7 @@ def experiment_submissions(request, project_slug, meta_slug, slug):
 			new_submission = form.save(commit=False)
 			new_submission.version = version
 			new_submission.save()
+			messages.info(request, "New submission created")
 
 			#return HttpResponseRedirect('/submissions/{}/{}/{}'.format(project.slug, meta_experiment.slug, experiment.slug))
 			return HttpResponseRedirect(reverse('web-experiment-submissions', args=(project.slug, meta_experiment.slug, experiment.slug,)))
@@ -203,6 +210,7 @@ def experiment_submissions(request, project_slug, meta_slug, slug):
 	submission_form = SubmissionForm()
 	submission_form.fields["model"].queryset = Model.objects.filter(contact=user_profile)
 
+	c['messages'] = messages.get_messages(request)
 	c['form'] = submission_form
 	c['upload_form'] = UploadForm()
 	return render(request, 'web/submissions.html', c)
