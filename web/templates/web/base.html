@@ -67,7 +67,7 @@
                   <ul class="dropdown-menu" role="menu">
                       <li><a href="{% url 'web-login' %}">about logging in</a></li>                    
                       <li><a href="{% url 'social:begin' 'linkedin' %}?next={% url 'web-profile' %}">via LinkedIn</a></li>
-                      <li><a href="{% url 'social:begin' 'google-oauth2' %}">via Google</a></li>
+                      <li><a href="{% url 'social:begin' 'google-oauth2' %}?next={% url 'web-profile' %}">via Google</a></li>
                   </ul>
               </li>
 
