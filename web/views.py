@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 
@@ -189,7 +190,8 @@ def experiment_submissions(request, project_slug, meta_slug, slug):
 			new_submission.version = version
 			new_submission.save()
 
-			return HttpResponseRedirect('/submissions/{}/{}/{}'.format(project.slug, meta_experiment.slug, experiment.slug))
+			#return HttpResponseRedirect('/submissions/{}/{}/{}'.format(project.slug, meta_experiment.slug, experiment.slug))
+			return HttpResponseRedirect(reverse('web-experiment-submissions', args=(project.slug, meta_experiment.slug, experiment.slug,)))
 
 		else:
 			
@@ -227,7 +229,7 @@ def logout_view(request):
 
 	logout(request)
 
-	return HttpResponseRedirect('/')
+	return HttpResponseRedirect(reverse('index'))
 
 
 
