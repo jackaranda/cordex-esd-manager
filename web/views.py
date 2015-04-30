@@ -54,7 +54,10 @@ def user_profile(request):
 		profile = None
 
 	# If we have a profile, then we can fetch a list of models
-	models = Model.objects.filter(contact=profile)
+	if profile:
+		models = Model.objects.filter(contact=profile)
+	else:
+		models = []
 
 	# Check if we have submitted POST data
 	if request.method == "POST":
@@ -112,7 +115,7 @@ def experiments(request, slug):
 
 	project = get_object_or_404(Project, slug=slug)
 
-	meta_experiments = MetaExperiment.objects.filter(project=project)
+	meta_experiments = MetaExperiment.objects.filter(project=project).order_by('id')
 
 	return render(request, 'web/experiments.html', {'user_profile': user_profile, 'project':project, 'meta_experiments':meta_experiments})
 
@@ -124,8 +127,6 @@ def experiment_detail(request, project_slug, meta_slug, slug):
 	except:
 		user_profile = None
 
-	user_models = Model.objects.filter(contact=user_profile)
-
 	project = get_object_or_404(Project, slug=project_slug)
 	meta_experiment = get_object_or_404(MetaExperiment, project=project, slug=meta_slug)
 
@@ -135,7 +136,6 @@ def experiment_detail(request, project_slug, meta_slug, slug):
 
 	c = {}
 	c['user_profile'] = user_profile
-	c['user_models'] = user_models
 	c['project'] = project
 	c['meta_experiment'] = meta_experiment
 	c['experiment'] = experiment
@@ -152,9 +152,9 @@ def experiment_submissions(request, project_slug, meta_slug, slug):
 	try:
 		user_profile = Profile.objects.get(user=request.user)
 	except:
-		user_profile = None
+		return HttpResponseRedirect(reverse('web-profile'))
 
-	user_models = Model.objects.filter(contact=user_profile)
+#	user_models = Model.objects.filter(contact=user_profile)
 
 	project = get_object_or_404(Project, slug=project_slug)
 	meta_experiment = get_object_or_404(MetaExperiment, project=project, slug=meta_slug)
@@ -162,9 +162,10 @@ def experiment_submissions(request, project_slug, meta_slug, slug):
 
 	user_submissions = Submission.objects.filter(experiment=experiment).order_by('experiment', '-version')
 
+
 	c = {}
 	c['user_profile'] = user_profile
-	c['user_models'] = user_models
+#	c['user_models'] = user_models
 	c['user_submissions'] = user_submissions
 	c['project'] = project
 	c['meta_experiment'] = meta_experiment
@@ -195,11 +196,14 @@ def experiment_submissions(request, project_slug, meta_slug, slug):
 
 		else:
 			
+			form.fields["model"].queryset = Model.objects.filter(contact=user_profile)
 			c['form'] = form
 			return render(request, 'web/submissions.html', c)
 
+	submission_form = SubmissionForm()
+	submission_form.fields["model"].queryset = Model.objects.filter(contact=user_profile)
 
-	c['form'] = SubmissionForm({'model':user_models[0]})
+	c['form'] = submission_form
 	c['upload_form'] = UploadForm()
 	return render(request, 'web/submissions.html', c)
 
@@ -210,7 +214,7 @@ def user_submissions(request):
 	try:
 		user_profile = Profile.objects.get(user=request.user)
 	except:
-		user_profile = None
+		return HttpResponseRedirect(reverse('web-profile'))
 
 	user_models = Model.objects.filter(contact=user_profile)
 
