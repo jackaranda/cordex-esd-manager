@@ -27,7 +27,7 @@ TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
 
 
-MEDIA_ROOT = ''
+MEDIA_ROOT = '/servers/cordex_manager_env/uploads'
 
 # Application definition
 

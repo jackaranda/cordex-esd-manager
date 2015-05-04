@@ -4,11 +4,13 @@ from django.core.files.storage import FileSystemStorage
 from profiles.models import Profile
 from experiments.models import Experiment
 
+from django.conf import settings
+
 FILE_FORMATS = (('txt', 'Claris Text Format'), ('ziptxt', 'Zipped text format'), ('nc', 'netcdf'))
 SUBMISSION_MODES = (('POST', 'HTTP POST'), ('PUT', 'FTP PUT'))
 FREQUENCIES = (('day', 'daily data'), ('month', 'monthly data'))
 
-filestorage = FileSystemStorage('/home/cjack/work/projects/code/cordex-esd-manager/cordex_esd_manager/uploads/')
+filestorage = FileSystemStorage(settings.MEDIA_ROOT)
 
 def make_upload_path(instance, filename):
 
