@@ -109,6 +109,9 @@ USE_TZ = True
 STATIC_URL = '/cordex-manager/static/'
 STATIC_ROOT = '/servers/cordex_manager_env/cordex-esd-manager/static'
 
+# General authentication settings
+LOGIN_URL = '/cordex-manager/accounts/login/'
+
 
 # python-social-auth backends
 AUTHENTICATION_BACKENDS = (
