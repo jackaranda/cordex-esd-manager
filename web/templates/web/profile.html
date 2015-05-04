@@ -46,7 +46,25 @@
 	        <tr>
 	          <td>{{ model.title }}</td>
 	          <td>{{ model.description }}</td>
-	          <td><a class="model-delete" href="{% url 'api:model-detail' model.id %}"><span data-toggle="tooltip" data-placement="bottom" title="Delete this model" class="glyphicon glyphicon-remove-circle"></span></a></td>
+	          <td><span data-toggle="modal" data-target="#delete-modal-{{ model.id }}" title="Delete this model" class="glyphicon glyphicon-remove-circle"></span></a>
+<div class="modal fade" id="delete-modal-{{ model.id }}" aria-labelledby="delete-modal-{{ model.id}}-label">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="delete-model-{{ modal.id}}-label">Confirm Delete Model?</h4>
+      </div>
+      <div class="modal-body">
+          Deleting a model will also delete all submissions associated with the model.  Please confirm that you wish to delete this model ({{ model.title }}) and associated submissions.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <a href="{% url 'api:model-detail' model.id %}" type="button" class="model-delete btn btn-primary" id="delete-modal-confirm-{{ model.id }}">Confirm Delete</a>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+            </td>
 	        </tr>
 	      {% endfor %}
         </table>
@@ -107,10 +125,10 @@
               return false;
           });
 
-          $(".model-delete > span").click(function(e) {
+          $(".model-delete").click(function(e) {
               var formdata = new FormData();
               console.log("delete!");
-              var url = $(e.target).parent().attr('href');
+              var url = $(e.target).attr('href');
               console.log(url);
               
               formdata.append('csrfmiddlewaretoken', '{{ csrf_token }}');
