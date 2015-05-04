@@ -3,17 +3,24 @@
 
 {% block content %}
 <h3>CORDEX Experiment Manager</h3>
+<img src="static/web/images/wcrp_cordex_logo.png">
+<hr/>
 <p>
 Welcome to the CORDEX Experiment Manager web platform.  This platform facilitates the design, configuration, and management of coordinated numerical experiments.  Currently the platform is focussed
 on the CORDEX Empirical Statistical (CORDEX-ESD) project but it is intended that the platform could be extended to support a wide range of coordinated numerical experiments.
 </p>
 <h3>Using the platform</h3>
-<p>The manager consists of two main sections, experiments, and submissions.  These are always accesible through the menu at the top of the page.</p>
+<p>The manager consists of three main sections: <a href="projects/cordex-esd/">experiments</a>, <a href="submissions/">your submissions</a>, and participant <a href="accounts/profile">profile</a>.  The Experiments section is always accessible through the menu at the top of this page.  "Your Submissions" and your participant Profile are only available after a participant has logged through the login menu at the top right of this page or through the <a href="accounts/login/">login page</a>.</p>
 
-<h4>Experiments</h4><p>The first is <a href="/experiments/">experiments</a>.  This section lists the currently open experiments and allows details of each experiment to be viewed.  Admistrators are able to create new experiments or edit existing experiments.  Participants are only able to view experiments and add comments/questions to experiments.</p>
+<h4><a href="projects/cordex-esd/">Experiments</a></h4><p>This section lists the currently open experiments and allows details of each experiment to be viewed.  Experiments will consist of a main experiment description and then descriptions of one or more subsidary experiments (or experiment "tiers") which will be detailed under each experiment.  Selecting an experiment tier will display specific details such as datasets and timeperiods.  If a participant is logged in they will then be able to create a new submission for a particular experiment tier.</p>
 
 
-<h4>Submissions</h4><p>The second section is the <a href="/submissions/">submission</a> section.  This section allows a partcipant to submit results to a particular experiment.  Results submissions take place through uploads such that a single submission may consist of multiple uploads.  Each upload contributes to the final submission for that participant for an experiment.  Each time an upload is added to a submission the submission is re-processed to check it for compliance with the experiment configuration, convert it to a standard data format, and merge dates and variables as needed.  The processing takes place in the background and current status of all a partcipants submissions can be viewed at any time in the <a href="/submissions/">submission</a> section of the platform.
+<h4><a href="submissions/">Submissions</a></h4><p>This section will appear once a participant is logged in and will list all the submissions the participant has created.  Results submissions take place through uploads such that a single submission may consist of multiple file uploads.  Each upload contributes to the final submission for that participant for a single experiment tier.  The submissions page allows a participant to upload new files to any submission as well as delete files previously uploaded.  Each time an upload is added to a submission the submission is re-processed to check it for compliance with the experiment configuration, convert it to a standard data format, and merge dates and variables as needed.  The processing takes place in the background and current status of all a partcipants submissions will be displayed under each submission (currently not implemented).
 </p>
+<p><strong>Submission versions</strong>: If you create more than one submission for the same experiment tier then each new submission will receive a new "version" number which will be added to the submission title, eg: ORDEX ESD Experiment 1 > Tier 1 (CSAG SOMD) version 4).  Currently only the version with the highest version number will be considered for the experiment.
+
+<h4><a href="accounts/profile/">Participant Profile</a></h4><p>This section is accessible after a participant has logged in and is then accessible by clicking the user name at the top right of this page and selecting "View Profile".  Currently participant profiles are very simple but this will be extended in the future.  The most important part of a participant profile is the list of "models" that the user can associate with experiment submissions.  Model details are added through the participant profile page.  You will need to add at least one model before you can successfully create your first submission.  Currently the model description is very minimal but will be extended in the near future.</p>
+
+<h4>Logging out</h4><p>Once you have completed your work on the site you can logout using the menu at the top right.  At any time you can return and login using the same authentication provider and continue adding or editing your submissions</p>
 
 {% endblock %}
