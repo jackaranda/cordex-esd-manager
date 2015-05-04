@@ -111,7 +111,7 @@ STATIC_ROOT = '/servers/cordex_manager_env/cordex-esd-manager/static'
 
 # General authentication settings
 LOGIN_URL = '/cordex-manager/accounts/login/'
-
+LOGIN_REDIRECT_URL = '/cordex-manager/accounts/profile/'
 
 # python-social-auth backends
 AUTHENTICATION_BACKENDS = (
