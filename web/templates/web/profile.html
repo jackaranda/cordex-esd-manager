@@ -46,7 +46,7 @@
 	        <tr>
 	          <td>{{ model.title }}</td>
 	          <td>{{ model.description }}</td>
-	          <td><a class="model-delete" href="/api/models/{{ model.id }}/"><span data-toggle="tooltip" data-placement="bottom" title="Delete this model" class="glyphicon glyphicon-remove-circle"></span></a></td>
+	          <td><a class="model-delete" href="{% url 'api:model-detail' model.id %}"><span data-toggle="tooltip" data-placement="bottom" title="Delete this model" class="glyphicon glyphicon-remove-circle"></span></a></td>
 	        </tr>
 	      {% endfor %}
         </table>
