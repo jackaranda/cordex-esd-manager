@@ -10,7 +10,7 @@
       <h4>{{ meta_experiment.title }} > {{ experiment.title }}</h4><hr/>
       <div>
         <p>{{ experiment.description }}</p>
-        <p><a class="btn btn-primary btn-sm" href="{% url 'web-experiment-submissions' project.slug meta_experiment.slug experiment.slug %}">Create a new submission for this experiment</a></p>
+        <p><a class="btn btn-primary btn-sm" href="{% url 'web-experiment-submissions' project.slug meta_experiment.slug experiment.slug %}">Create a new submission for this experiment</a> You currently have <strong>{{ user_submissions|length }}</strong> submissions for this experiment tier</p>
       </div>
     </div>
      

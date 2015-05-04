@@ -139,6 +139,7 @@ def experiment_detail(request, project_slug, meta_slug, slug):
 	experiment = Experiment.objects.get(meta=meta_experiment, slug=slug)
 	experiment_timeperiods = ExperimentTimePeriods.objects.filter(experiment=experiment)
 	experiment_datasets = ExperimentDatasets.objects.filter(experiment=experiment)
+	user_submissions = Submission.objects.filter(experiment=experiment, owner=user_profile)
 
 	c = {}
 	c['user_profile'] = user_profile
@@ -147,6 +148,7 @@ def experiment_detail(request, project_slug, meta_slug, slug):
 	c['experiment'] = experiment
 	c['timeperiods'] = experiment_timeperiods
 	c['datasets']  = experiment_datasets
+	c['user_submissions'] = user_submissions
 
 
 	return render(request, 'web/experiment_detail.html', c)
@@ -166,7 +168,7 @@ def experiment_submissions(request, project_slug, meta_slug, slug):
 	meta_experiment = get_object_or_404(MetaExperiment, project=project, slug=meta_slug)
 	experiment = Experiment.objects.get(meta=meta_experiment, slug=slug)
 
-	user_submissions = Submission.objects.filter(experiment=experiment).order_by('experiment', '-version')
+	user_submissions = Submission.objects.filter(experiment=experiment, owner=user_profile).order_by('experiment', '-version')
 
 
 	c = {}
@@ -226,7 +228,7 @@ def user_submissions(request):
 
 	user_models = Model.objects.filter(contact=user_profile)
 
-	user_submissions = Submission.objects.all().order_by('experiment', '-version')
+	user_submissions = Submission.objects.filter(owner=user_profile).order_by('experiment', '-version')
 
 	c = {}
 	c['user_profile'] = user_profile
