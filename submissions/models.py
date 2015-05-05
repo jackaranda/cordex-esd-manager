@@ -14,7 +14,7 @@ filestorage = FileSystemStorage(settings.MEDIA_ROOT)
 
 def make_upload_path(instance, filename):
 
-	return "{}/{}/uploaded/{}".format(instance.submission.model.slug, instance.submission.experiment.slug, filename)
+	return "{}/{}/{}/uploaded/{}".format(instance.submission.owner.user, instance.submission.model.slug, instance.submission.experiment.slug, filename)
 
 class Model(models.Model):
 
