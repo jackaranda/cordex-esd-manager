@@ -56,6 +56,11 @@ def user_profile(request):
 	except:
 		profile = None
 
+	# If we don't have a profile then we create a blank one
+	if not profile:
+		profile = Profile(user=request.user)
+		profile.save()
+
 	# If we have a profile, then we can fetch a list of models
 	if profile:
 		models = Model.objects.filter(contact=profile)
