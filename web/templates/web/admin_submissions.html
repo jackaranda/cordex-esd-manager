@@ -23,11 +23,11 @@
                {% for column in experiment %}
                   
                   {% if column > 0 %}
-                    <td>{{ column }}</td>
+                    <td style="background-color:green">{{ column }}</td>
                   {% else %}
                     <td></td>
                   {% endif %}
-                  
+
                {% endfor %}
             </tr>
           {% endfor %}
