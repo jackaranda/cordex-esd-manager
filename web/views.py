@@ -251,10 +251,12 @@ def user_submissions(request):
 def admin_submissions(request):
 
 	meta_experiments = MetaExperiment.objects.filter()
+	models = Model.objects.filter().order_by('contact')
 	submissions = Submission.objects.filter().order_by('owner', 'experiment', '-version')
 
 	c = {}
 	c['meta_experiments'] = meta_experiments
+	c['models'] = models
 	c['submissions'] = submissions
 
 	return render(request, 'web/admin_submissions.html', c)
