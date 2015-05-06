@@ -27,8 +27,11 @@ urlpatterns = patterns('',
     url(r'^$', 'web.views.index', name='index'),
     url(r'^projects/([-\w]+)/$', 'web.views.experiments', name='web-experiments'),
     url(r'^projects/([-\w]+)/([-\w]+)/([-\w]+)$', 'web.views.experiment_detail', name='web-experiment-detail'), 
+    
+    url(r'^submissions-admin/$', 'web.views.admin_submissions', name='web-admin-submissions'),
     url(r'^submissions/$', 'web.views.user_submissions', name='web-user-submissions'),
     url(r'^submissions/([-\w]+)/([-\w]+)/([-\w]+)$', 'web.views.experiment_submissions', name='web-experiment-submissions'),
+    
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^api/', include(router.urls, namespace='api')),

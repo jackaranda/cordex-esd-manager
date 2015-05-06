@@ -25,6 +25,10 @@ from submissions.forms import SubmissionForm
 from submissions.forms import UploadForm
 from profiles.forms import ProfileForm
 
+
+
+
+
 # Create your views here.
 
 def index(request):
@@ -243,6 +247,17 @@ def user_submissions(request):
 
 	return render(request, 'web/user_submissions.html', c)
 
+@login_required
+def admin_submissions(request):
+
+	meta_experiments = MetaExperiment.objects.filter()
+	submissions = Submission.objects.filter().order_by('owner', 'experiment', '-version')
+
+	c = {}
+	c['meta_experiments'] = meta_experiments
+	c['submissions'] = submissions
+
+	return render(request, 'web/admin_submissions.html', c)
 
 def logout_view(request):
 

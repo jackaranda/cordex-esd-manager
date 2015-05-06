@@ -1,0 +1,54 @@
+{% extends "web/base.html" %}
+
+{% block title %}CORDEX Experiment Manager | Experiments {% endblock %}
+
+{% block content %}
+
+
+
+    <div class="row">
+      <h4>Experiment submissions matrix</h4>
+      <table class="table table-striped table-condensed">
+        
+        <tr>
+          <td colspan="2"></td>
+          <td>Models</td>
+        </tr>
+
+        <tr>
+          <td colspan="2">Experiment/Tier</td>
+            {% for submission in submissions %}
+                <td>{{ submission.model }}</td>
+            {% endfor %}
+        </tr>
+
+        {% for meta_experiment in meta_experiments %}
+          {% if forloop.counter == 1 %} <tr><td> {{ meta_experiment }} </td></tr> {% endif %}
+
+            {% for experiment in meta_experiment.experiments.all %}
+              <tr><td></td><td>{{ experiment }}</td>
+
+                  {% for submission in submissions %}
+                    {% if submission.experiment == experiment %}
+                      {% if submissions.uploads.all|length > 0 %}
+                        <td style="background-color:green;">{{ submission.uploads.all|length }}</td>
+                      {% else %}
+                        <td></td>
+                      {% endif %}
+                    {% endif %}
+                  {% endfor %}
+
+              </tr>
+            {% endfor %}
+
+        {% endfor %}
+
+      </table>
+
+
+    </div>
+
+
+
+{% endblock %}
+

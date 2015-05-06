@@ -48,6 +48,11 @@
             {% if user.is_authenticated %}
             <li><a href="{% url 'web-user-submissions' %}">Your Submissions</a></li>
             {% endif %}
+
+            {% if user.is_staff %}
+            <li><a href="{% url 'web-admin-submissions' %}">All Submissions</a></li>
+            {% endif %}
+
           </ul>
           <ul class="nav navbar-nav navbar-right">
 
