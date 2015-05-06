@@ -22,9 +22,9 @@ SECRET_KEY = 'qcmuvef2qacrl!4xn41vkxixf=&#totrb5bnx4_e+in!4%%m@o'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['cordex.csag.uct.ac.za']
 
 
 MEDIA_ROOT = '/servers/cordex_manager_env/uploads'
