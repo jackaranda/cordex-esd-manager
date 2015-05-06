@@ -7,6 +7,7 @@ class UploadInline(admin.TabularInline):
 	model = Upload
 
 class ModelAdmin(admin.ModelAdmin):
+	model = Model
 	fields = ('slug', 'title', 'contact', 'description',)
 	prepopulated_fields = {"slug": ("title",)}
 
