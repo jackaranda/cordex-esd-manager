@@ -9,45 +9,30 @@
     <div class="row">
       <h4>Experiment submissions matrix</h4>
       <table class="table table-bordered table-condensed">
-        
-        <tr>
-          <td colspan="2"></td>
-          <td>Models</td>
-        </tr>
-
-        <tr>
-          <td colspan="2">Experiment/Tier</td>
-            {% for model in models %}
-                <td>{{ model }}</td>
-            {% endfor %}
-        </tr>
-
-        {% for meta_experiment in meta_experiments %}
-          <tr>
-          {% if forloop.counter == 1 %} <td> {{ meta_experiment }} </td> 
-          {% else %} <td></td> {% endif %}
-
-            {% for experiment in meta_experiment.experiments.all %}
-              <td>{{ experiment }}</td>
-
-                  {% for model in models %}
-                    {% for submission in submissions %}
-                      {% if submission.experiment == experiment and submission.model == model %}
-                          {% if submission.uploads.all|length > 0 %}
-                            <td style="background-color:green">{{ submission.uploads.all|length }}</td>
-                          {% else %}
-                            <td></td>
-                          {% endif %}
-                      {% else %}
-                        <td></td>
-                      {% endif %}
-
-                    {% endfor %}
-                  {% endfor %}
-
-            {% endfor %}
+      
+          <tr><td></td>
+            {% for model in models %}<td>{{ model }}</td>{% endfor %}
           </tr>
-        {% endfor %}
+
+      {% for name, meta_experiment in matrix.items %}
+          <tr><td><strong>{{ name }}</strong></td></tr>
+
+          {% for name, experiment in meta_experiment.items %}
+            <tr><td>{{ name }}</td>
+
+               {% for column in experiment %}
+                  
+                  {% if column > 0 %}
+                    <td>{{ column }}</td>
+                  {% else %}
+                    <td></td>
+                  {% endif %}
+                  
+               {% endfor %}
+            </tr>
+          {% endfor %}
+
+      {% endfor %}
 
       </table>
 

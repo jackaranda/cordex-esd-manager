@@ -255,10 +255,29 @@ def admin_submissions(request):
 	submissions = Submission.objects.filter().order_by('owner', 'experiment', '-version')
 
 	c = {}
-	c['meta_experiments'] = meta_experiments
-	c['models'] = models
-	c['submissions'] = submissions
+	matrix = {}
 
+	for meta_experiment in meta_experiments.all():
+		sub_matrix = {}
+
+		for experiment in meta_experiment.experiments.all():
+			row = []
+
+			for model in models.all():
+				count = 0
+
+				for submission in submissions.all():
+					if submission.model == model and submission.experiment == experiment:
+						count += 1
+
+				row.append(count)
+
+			sub_matrix[experiment] = row
+
+		matrix[meta_experiment] = sub_matrix
+
+	c['models'] = models
+	c['matrix'] = matrix
 	return render(request, 'web/admin_submissions.html', c)
 
 def logout_view(request):
