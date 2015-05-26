@@ -1,0 +1,6 @@
+{"name":"CORDEX-ESD-experiment1",
+	"reference": "/home/cjack/work/data/observed/station/claris/station/pr.nc",
+	"diagnostics":{
+		"bias_mean":{}
+	}
+}
