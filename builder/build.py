@@ -12,8 +12,8 @@ sys.path.append('/home/cjack/work/projects/code/pycdm2/')
 import pycdm
 print pycdm.Dataset.__subclasses__()
 
-#sys.path.append('/servers/cordex_manager_env/cordex-esd-manager')
-sys.path.append('/home/cjack/work/projects/code/cordex-esd-manager/cordex_esd_manager/')
+sys.path.append('/servers/cordex_manager_env/cordex-esd-manager')
+#sys.path.append('/home/cjack/work/projects/code/cordex-esd-manager/cordex_esd_manager/')
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cordex_esd_manager.settings")
 
 import django
@@ -22,9 +22,9 @@ django.setup()
 from experiments.models import Experiment
 from submissions.models import Submission, Upload, Model
 
-#UPLOAD_ROOT = '/servers/cordex_manager_env/uploads'
-UPLOAD_ROOT = '/home/cjack/work/projects/code/cordex-esd-manager/uploads'
-force_rebuild = False
+UPLOAD_ROOT = '/servers/cordex_manager_env/uploads'
+#UPLOAD_ROOT = '/home/cjack/work/projects/code/cordex-esd-manager/uploads'
+force_rebuild = True
 
 for e in Experiment.objects.all():
 	print e.meta.slug, e.slug
@@ -83,6 +83,7 @@ for e in Experiment.objects.all():
 					ds = pycdm.open(source)
 				except:
 					print "Failed to open the source dataset!!!!"
+					print sys.exc_info()
 					continue
 
 				# Copy metadata from reference dataset
@@ -93,46 +94,49 @@ for e in Experiment.objects.all():
 				features_mapped = False
 				features_id_names = ['id', 'station_id', 'stid']
 
-				for name in features_id_names:
-					print "looking for ", name
-					if ds.root.variables.has_key(name):
-						source_ids = ds.root.variables[name][:]
+				for id_name in features_id_names:
+					print "looking for ", id_name
+					if ds.root.variables.has_key(id_name):
+						source_ids = ds.root.variables[id_name][:]
+						id_dimension = ds.root.variables[id_name].dimensions[0]
 						features_mapped = True
+						break
 
-				print "source_ids = ", source_ids
+				# NetCDF3 files may have character arrays which need to be converted
+				if len(source_ids.shape) > 1:
+					new_source_ids = []
+					for i in range(0,source_ids.shape[0]):
+						tmp = u''
+						for j in range(0, source_ids.shape[1]):
+							tmp += source_ids[i,j]
+						new_source_ids.append(tmp.strip())
+					source_ids = np.array(new_source_ids)
+								
+				print "source_ids = ", source_ids.astype(int).astype(unicode)
 
 				if not features_mapped:
 					print "Failed to map features!!!!"
 					continue
 
 				print "reference_ids = ", reference_ids
-				feature_map = np.array([list(reference_ids).index(val) for val in list(source_ids)])
-
-				#print "Mapped features"
-				#feature_map = range(0,81)
-				# Get reference lat/lon and elevations
-			 	latitudes = reference_ds.root.variables['latitude'][:][feature_map]
-			 	longitudes = reference_ds.root.variables['longitude'][:][feature_map]
-			 	elevations = reference_ds.root.variables['elevation'][:][feature_map]
-			 	#latitudes = reference_ds.root.variables['latitude'][:]
-			 	#longitudes = reference_ds.root.variables['longitude'][:]
-			 	#elevations = reference_ds.root.variables['elevation'][:]
-
-			 	# Create or overide dataset lat/lon elevations
-			 	if ds.root.variables.has_key('latitude'):
-				 	ds.root.variables['latitude'][:] = latitudes
+				try:	
+					feature_map = np.array([list(reference_ids).index(val) for val in list(source_ids)])
+				except:
+					print "Couldn't produce feature map!!!"
+					print sys.exc_info()
+					continue
 				else:
-					ds.root.variables['latitude'] = pycdm.Variable('latitude', ds.root, data=latitudes, dimensions=['feature'], attributes={'units':'degrees north'})
+					print "Mapped features through ", id_dimension
+				
+					# Get reference lat/lon and elevations
+			 		latitudes = reference_ds.root.variables['latitude'][:][feature_map]
+			 		longitudes = reference_ds.root.variables['longitude'][:][feature_map]
+			 		#elevations = reference_ds.root.variables['elevation'][:][feature_map]
 
-			 	if ds.root.variables.has_key('longitude'):
-				 	ds.root.variables['longitude'][:] = longitudes
-				else:
-					ds.root.variables['longitude'] = pycdm.Variable('longitude', ds.root, data=longitudes, dimensions=['feature'], attributes={'units':'degrees east'})
-
-			 	if ds.root.variables.has_key('elevation'):
-				 	ds.root.variables['elevation'][:] = elevations
-				else:
-					ds.root.variables['elevation'] = pycdm.Variable('elevation', ds.root, data=elevations, dimensions=['feature'], attributes={'units':'m'})
+			 		# Create or overide dataset lat/lon elevations
+					ds.root.variables['latitude'] = pycdm.Variable('latitude', ds.root, data=latitudes, dimensions=[id_dimension], attributes={'units':'degrees north'})
+					ds.root.variables['longitude'] = pycdm.Variable('longitude', ds.root, data=longitudes, dimensions=[id_dimension], attributes={'units':'degrees east'})
+					#ds.root.variables['elevation'] = pycdm.Variable('elevation', ds.root, data=elevations, dimensions=[id_name], attributes={'units':'m'})
 
 				print "Going to try to write out netCDF file"
 				try:
@@ -148,6 +152,6 @@ for e in Experiment.objects.all():
 				for period in e.timeperiods.filter(experimenttimeperiods__category='validation'):
 					begin = period.begin.strftime("%Y%m%d")
 					end = period.end.strftime("%Y%m%d")
-					target_names[variable.short_name] = "{}_{}-{}_{}_v{}_day_{}_{}.nc".format(variable.short_name, e.meta.slug, e.slug, s.model.slug, s.version, begin, end)
+					target_names[variable.short_name] = "{}_{}-{}_{}_v{}_day_{}_{}.nc".format(variable.short_name, e.meta.slug, e.slug, submission.model.slug, submission.version, begin, end)
 		
 			print target_names
