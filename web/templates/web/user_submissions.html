@@ -51,6 +51,7 @@
               {% endfor %}
               </table>
 
+
               <form class="upload-form" action="{% url 'api:upload-list' %}" method="POST" enctype="multipart/form-data">
                   {% csrf_token %}
                   <input type="hidden" name="submission" value="{{ submission.id }}">
@@ -65,6 +66,19 @@
                   </div>
                   <input type="submit" value="upload">
               </form>
+
+<div class="modal fade" id="uploadModal" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>Uploading file... </p>
+        <img src="/static/web/images/ajax-loader.gif">
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
           </div>
         </div>
       {% endfor %}
@@ -85,7 +99,9 @@
               console.log('submitting');
               var url = $(e.target).attr('action');
               console.log('url = ' + url);
-              
+
+              $('#uploadModal').modal('show');
+             
               $.ajax({
                   url: url,
                   type: 'POST',
@@ -98,7 +114,6 @@
                   },
 
               });
-
               return false;
           });
 

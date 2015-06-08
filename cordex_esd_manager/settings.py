@@ -27,7 +27,7 @@ TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
 
 
-MEDIA_ROOT = '/home/cjack/work/projects/code/cordex-esd-manager/cordex_esd_manager/uploads/'
+MEDIA_ROOT = '/home/cjack/work/projects/code/cordex-esd-manager/uploads/'
 
 # Application definition
 
