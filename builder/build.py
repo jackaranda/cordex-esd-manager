@@ -24,9 +24,15 @@ from submissions.models import Submission, Upload, Model
 
 UPLOAD_ROOT = '/servers/cordex_manager_env/uploads'
 #UPLOAD_ROOT = '/home/cjack/work/projects/code/cordex-esd-manager/uploads'
-force_rebuild = True
+
+RESULTS_ROOT = '/servers/cordex_manager_env/results'
+
+force_rebuild = False
 
 for e in Experiment.objects.all():
+	if e.slug == 'tier-2-stationarity':
+		continue
+
 	print e.meta.slug, e.slug
     
 	reference_ds = pycdm.open('/home/cjack/work/data/observed/station/claris/station/pr.nc')
@@ -111,8 +117,9 @@ for e in Experiment.objects.all():
 							tmp += source_ids[i,j]
 						new_source_ids.append(tmp.strip())
 					source_ids = np.array(new_source_ids)
-								
-				print "source_ids = ", source_ids.astype(int).astype(unicode)
+				
+				source_ids = source_ids.astype(int).astype(unicode)
+				print "source_ids = ", source_ids
 
 				if not features_mapped:
 					print "Failed to map features!!!!"
@@ -147,11 +154,41 @@ for e in Experiment.objects.all():
 					continue
 
 			# Open the netcdf file and write out each variable to separate netcdf files
-			target_names = {}
+			
+			ds = pycdm.open(target)
+
 			for variable in e.variables.filter(experimentvariables__category='output'):
 				for period in e.timeperiods.filter(experimenttimeperiods__category='validation'):
+					
+					# First check the variable is in the source file
+					if variable.short_name not in ds.root.variables.keys():
+						continue
+
+					print
+					print "WRITING out single variable results file"
+					print target, variable, period
+
 					begin = period.begin.strftime("%Y%m%d")
 					end = period.end.strftime("%Y%m%d")
-					target_names[variable.short_name] = "{}_{}-{}_{}_v{}_day_{}_{}.nc".format(variable.short_name, e.meta.slug, e.slug, submission.model.slug, submission.version, begin, end)
-		
-			print target_names
+					
+					# Construct the DRS formatted filename
+					target_name = "{}_{}-{}_{}_v{}_day_{}_{}.nc".format(variable.short_name, e.meta.slug, e.slug, submission.model.slug, submission.version, begin, end)
+					
+					# Construct and create the directory structure
+					target_path = "{}/{}/{}/{}".format(RESULTS_ROOT, submission.owner.user, submission.model.slug, submission.experiment.slug)
+					try:
+						os.stat(target_path)
+					except:
+						os.makedirs(target_path)      
+					
+					# Construct the full target filename
+					target_filename = "{}/{}".format(target_path, target_name)
+					print target_filename
+
+					# Try and and write the final single variable results file
+					try:
+						pycdm.plugins.netcdf4.netCDF4Dataset.copy(ds, target_filename, include=[variable.short_name, id_name, 'latitude', 'longitude', 'elevation'])
+					except:
+						print sys.exc_info()
+						print "Couldn't write single variable results file"
+						continue	
