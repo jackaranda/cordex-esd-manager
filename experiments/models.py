@@ -9,6 +9,7 @@ EXPERIMENT_DATASET_CATEGORIES = (('predictor', 'Predictor'), ('predictand', 'Pre
 EXPERIMENT_VARIABLE_CATEGORIES = (('forcing', 'Forcing'), ('output', 'Output'))
 TIMEPERIOD_CATEGORIES = (('calibration', 'Calibration period'), ('validation', 'Validation period'))
 FREQUENCIES = (('day', 'daily data'), ('month', 'monthly data'))
+META_DEPENDENCY_CATEGORIES = (('Equal', 'equal'),)
 
 
 class TimePeriod(models.Model):
@@ -73,6 +74,8 @@ class MetaExperiment(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	modified = models.DateTimeField(auto_now=True)
 
+	metadata_category = models.ForeignKey('MetaCategory', null=True, blank=True)
+
 	def fullname(self):
 		return "{} | {}".format(self.project, self.title)
 
@@ -135,3 +138,38 @@ class ExperimentTimePeriods(models.Model):
 
 	def __unicode__(self):
 		return "{} - {} ({})".format(self.experiment, self.timeperiod, self.category)
+
+
+class MetaCategory(models.Model):
+
+	slug = models.SlugField()
+	description = models.TextField(default="")
+
+	def __unicode__(self):
+		return self.slug
+
+class MetaTerm(models.Model):
+
+	category = models.ForeignKey(MetaCategory)
+	name = models.SlugField()
+	long_name = models.CharField(max_length=100, default="")
+	help_text = models.TextField(default="", blank=True)
+	multiple = models.BooleanField(default=False)
+#	depends_on = models.ForeignKey('ModelMetaDependencies') 
+
+	def __unicode__(self):
+		return "{}:{}".format(self.category,self.name)
+
+class MetaDependency(models.Model):
+
+	depends_on = models.ForeignKey(MetaTerm, related_name='depended_on')
+	category = models.TextField(choices=META_DEPENDENCY_CATEGORIES)
+	depends_value = models.ForeignKey('MetaValue')
+
+class MetaValue(models.Model):
+
+	term = models.ForeignKey(MetaTerm, related_name='values')
+	value = models.CharField(max_length=100)
+
+	def __unicode__(self):
+		return "{}:{}".format(self.term, self.value)

@@ -1,5 +1,6 @@
 from django.contrib import admin
 from experiments.models import TimePeriod, Project, MetaExperiment, Experiment, Dataset, Variable, ExperimentTimePeriods, ExperimentDatasets, ExperimentVariables
+from experiments.models import MetaCategory, MetaTerm, MetaDependency, MetaValue
 
 # Register your models here.
 
@@ -52,6 +53,27 @@ class DatasetAdmin(admin.ModelAdmin):
 	list_display = ('title', 'description', 'category', 'source_url')
 	prepopulated_fields = {"slug": ("title",)}
 
+class MetaTermInline(admin.TabularInline):
+	model = MetaTerm
+
+class MetaCategoryAdmin(admin.ModelAdmin):
+	model = MetaCategory
+	fields = ('slug', 'description')
+	inlines = (MetaTermInline,)
+
+class MetaValueInline(admin.TabularInline):
+	model = MetaValue
+
+class MetaTermAdmin(admin.ModelAdmin):
+	model = MetaTerm
+	fields = ('category', 'name', 'long_name', 'help_text', 'multiple')
+	inlines = (MetaValueInline,)
+
+
+admin.site.register(MetaCategory, MetaCategoryAdmin)
+admin.site.register(MetaTerm, MetaTermAdmin)
+#admin.site.register(MetaValues)
+#admin.site.register(MetaDependencies)
 
 admin.site.register(TimePeriod, TimePeriodAdmin)
 admin.site.register(Project, ProjectAdmin)

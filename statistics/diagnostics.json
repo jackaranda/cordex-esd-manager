@@ -1,0 +1,37 @@
+{"name":"CORDEX-ESD-experiment1",
+	"reference":{
+		"pr":"/home/cjack/work/data/observed/station/claris/station/pr.nc",
+		"tasmin":"/home/cjack/work/data/observed/station/claris/station/tasmin.nc",
+		"tasmax":"/home/cjack/work/data/observed/station/claris/station/tasmax.nc"
+	},
+	"experiments": {
+		"tier-1":{
+			"startdate":"1996-01-01 00:00",
+			"enddate":"2006-12-31 23:59",
+			"statistics":{
+				"monmean": {"vars":["tasmax","tasmin"], "function":"np.ma.mean", "args":{"aggregation":"monthly"}},
+				"montotal": {"vars":["pr"], "function":"np.ma.sum", "args":{"aggregation":"monthly"}},
+				"tx95p": {"vars":["tasmax"], "function":"t95p", "args":{}},
+				"tn5p": {"vars":["tasmin"], "function":"t5p", "args":{}},			
+				"r50p": {"vars":["pr"], "function":"r50p", "args":{}},
+				"r95p": {"vars":["pr"], "function":"r95p", "args":{}},
+				"r99p": {"vars":["pr"], "function":"r99p", "args":{}},
+				"wetdays": {"vars":["pr"], "function":"wetdays", "args":{"aggregation":"monthly"}}
+			}
+		},
+		"tier-2-k-folding":{
+			"startdate":"1979-01-01 00:00",
+			"enddate":"2003-12-31 23:59",
+			"statistics":{
+				"monmean": {"vars":["tasmax","tasmin"], "function":"np.ma.mean", "args":{"aggregation":"monthly"}},
+				"montotal": {"vars":["pr"], "function":"np.ma.sum", "args":{"aggregation":"monthly"}},
+				"tx95p": {"vars":["tasmax"], "function":"t95p", "args":{}},
+				"tn5p": {"vars":["tasmin"], "function":"t5p", "args":{}},			
+				"r50p": {"vars":["pr"], "function":"r50p", "args":{}},
+				"r95p": {"vars":["pr"], "function":"r95p", "args":{}},
+				"r99p": {"vars":["pr"], "function":"r99p", "args":{}},
+				"wetdays": {"vars":["pr"], "function":"wetdays", "args":{"aggregation":"monthly"}}
+			}
+		}
+	}
+}

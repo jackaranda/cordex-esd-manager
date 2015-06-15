@@ -19,17 +19,14 @@ from experiments.models import MetaExperiment
 from experiments.models import Experiment
 from experiments.models import ExperimentTimePeriods
 from experiments.models import ExperimentDatasets
+from experiments.models import MetaCategory
+from experiments.models import MetaTerm
 
 from submissions.forms import SubmissionModelForm
 from submissions.forms import SubmissionForm
 from submissions.forms import UploadForm
 from profiles.forms import ProfileForm
 
-
-
-
-
-# Create your views here.
 
 def index(request):
 
@@ -102,6 +99,9 @@ def user_profile(request):
 	else:
 		profile_form = ProfileForm()
 
+	meta_category = MetaCategory.objects.filter(slug='esd')
+
+	c['meta_terms'] = MetaTerm.objects.filter(category=meta_category)
 	c['messages'] = messages.get_messages(request)
 	c['profile_form'] = profile_form
 	c['user_profile'] = profile

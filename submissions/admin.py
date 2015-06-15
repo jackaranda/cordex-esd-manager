@@ -1,16 +1,20 @@
 from django.contrib import admin
-from submissions.models import Model, ModelMetaCategory, ModelMetaTerm, ModelMetaDependencies, ModelMetaValues, Submission, Upload
+from experiments.models import MetaValue
+from submissions.models import Model, ModelMeta, Submission, Upload
 
 # Register your models here.
 
 class UploadInline(admin.TabularInline):
 	model = Upload
 
+#class MetaValueInline(admin.TabularInline):
+#	model = MetaValue
+
 class ModelAdmin(admin.ModelAdmin):
 	model = Model
-	fields = ('slug', 'title', 'contact', 'description',)
+	fields = ('slug', 'title', 'description', 'metadata')
 	prepopulated_fields = {"slug": ("title",)}
-
+#	inlines = (MetaValueInline,)
 
 class SubmissionAdmin(admin.ModelAdmin):
 	model = Submission
@@ -19,10 +23,6 @@ class SubmissionAdmin(admin.ModelAdmin):
 	inlines = (UploadInline,)
 
 
-admin.site.register(ModelMetaCategory)
-admin.site.register(ModelMetaTerm)
-admin.site.register(ModelMetaDependencies)
-admin.site.register(ModelMetaValues)
 admin.site.register(Model, ModelAdmin)
 admin.site.register(Submission, SubmissionAdmin)
 admin.site.register(Upload)

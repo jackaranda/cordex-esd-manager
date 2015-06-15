@@ -88,6 +88,19 @@
 			<textarea name="description" class="form-control" id="model-description" placeholder="Enter a brief description of the model"></textarea>
 
 			<input type="hidden" name="contact" value="{{ user_profile.id }}">
+      <hr>
+      <h3>Model Meta-data</h3>
+
+      {% for term in meta_terms %}
+      <p><strong>{{ term.long_name }}</strong></p>
+      <select name="metadata">
+        {% for value in term.values.all %}
+          <option value="{{ value.id }}">{{ value.value }}</option>
+        {% endfor %}
+      </select>
+      <p>{{ term.help_text }}</p>
+      {% endfor %}
+      <hr>
 
 			<input type="submit" value="Create model description">
 		</form>

@@ -16,7 +16,7 @@ class Profile(models.Model):
 	activated = models.BooleanField(default=False)
 
 	def __unicode__(self):
-		return '{}'.format(self.user.username)
+		return '{}'.format(self.user.email)
 
 	
 
