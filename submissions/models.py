@@ -2,8 +2,7 @@ from django.db import models
 from django.core.files.storage import FileSystemStorage
 
 from profiles.models import Profile
-from experiments.models import Experiment, MetaTerm, MetaValue
-
+from experiments.models import Experiment, MetaTerm
 from django.conf import settings
 
 FILE_FORMATS = (('txt', 'Claris Text Format'), ('ziptxt', 'Zipped text format'), ('nc', 'netcdf'))
@@ -16,13 +15,6 @@ def make_upload_path(instance, filename):
 
 	return "{}/{}/{}/uploaded/{}".format(instance.submission.owner.user, instance.submission.model.slug, instance.submission.experiment.slug, filename)
 
-class ModelMeta(models.Model):
-
-	model = models.ForeignKey('Model', null=True, related_name='metadata_old')
-	entry = models.ForeignKey(MetaValue)
-
-	def __unicode__(self):
-		return "{}:{}".format(self.entry.term, self.entry.value)
 
 class Model(models.Model):
 
@@ -31,10 +23,17 @@ class Model(models.Model):
 	contact = models.ForeignKey(Profile)
 	description = models.TextField(default="", blank=True)
 
-	metadata = models.ManyToManyField(MetaValue)
-
 	def __unicode__(self):
 		return self.title
+
+class ModelMeta(models.Model):
+
+	model = models.ForeignKey('Model', null=True, related_name='metadata')
+	term = models.ForeignKey(MetaTerm)
+	value = models.CharField(max_length=500, default="")
+
+	def __unicode__(self):
+		return "{}:{}".format(self.term, self.value)
 
 
 class Submission(models.Model):
@@ -56,6 +55,16 @@ class Submission(models.Model):
 
 	def __unicode__(self):
 		return "{} > {} ({}) version {}".format(self.experiment.meta, self.experiment, self.model, self.version)
+
+class SubmissionMeta(models.Model):
+
+	submission = models.ForeignKey('Submission', null=True, related_name='metadata')
+	term = models.ForeignKey(MetaTerm)
+	value = models.CharField(max_length=500, default="")
+
+	def __unicode__(self):
+		return "{}:{}".format(self.term, self.value)
+
 
 class Upload(models.Model):
 

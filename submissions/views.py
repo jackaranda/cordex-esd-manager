@@ -5,8 +5,9 @@ from rest_framework import viewsets
 from rest_framework import views
 from rest_framework import parsers
 from rest_framework import mixins
-from submissions.serializers import ModelSerializer, SubmissionSerializer, UploadSerializer
-from submissions.models import Model, Submission, Upload
+from submissions.serializers import ModelSerializer, ModelMetaSerializer
+from submissions.serializers import SubmissionSerializer, UploadSerializer
+from submissions.models import Model, ModelMeta, Submission, Upload
 from profiles.models import Profile
 
 from rest_framework import permissions
@@ -18,7 +19,15 @@ class ModelViewSet(viewsets.ModelViewSet):
     """
     queryset = Model.objects.all()
     serializer_class = ModelSerializer
+    permission_classes = [permissions.DjangoModelPermissions]
 
+
+class ModelMetaViewSet(viewsets.ModelViewSet):
+
+    queryset = ModelMeta.objects.all()
+    serializer_class = ModelMetaSerializer
+    permission_classes = [permissions.DjangoModelPermissions]
+        
 
 class SubmissionViewSet(viewsets.ModelViewSet):
     """

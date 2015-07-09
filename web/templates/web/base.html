@@ -46,7 +46,8 @@
             <li><a href="{% url 'web-experiments' 'cordex-esd' %}">Experiments</a></li>
 
             {% if user.is_authenticated %}
-            <li><a href="{% url 'web-user-submissions' %}">Your Submissions</a></li>
+            <li><a href="{% url 'web-user-submissions' %}">Submissions</a></li>
+            <li><a href="{% url 'web-models-list' %}">Models</a></li>
             {% endif %}
 
             {% if user.is_staff %}

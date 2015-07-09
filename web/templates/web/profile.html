@@ -92,15 +92,43 @@
       <h3>Model Meta-data</h3>
 
       {% for term in meta_terms %}
-      <p><strong>{{ term.long_name }}</strong></p>
-      <select name="metadata">
-        {% for value in term.values.all %}
-          <option value="{{ value.id }}">{{ value.value }}</option>
-        {% endfor %}
-      </select>
-      <p>{{ term.help_text }}</p>
+
+      <div class="row">
+        {% if term.multiple %}
+            <div class="col-md-4">
+              <p><strong>{{ term.long_name }}</strong></p>
+              {% for value in term.values.all %}
+                <input type="checkbox" name="metadata" value="{{ term }}:{{ value }}">{{ value }}</input><br/>
+              {% endfor %}
+              {% if term.freetext %}
+                <input type="checkbox" name="metadata" value="{{ term }}:other">other</input><br/>
+                other details: <input type="text" name="metadata"></input>
+              {% endif %}
+            </div>
+            <div class="col-md-8">
+              <p>{{ term.help_text }}</p>
+            </div>
+        {% endif %}
+
+        {% if not term.multiple %}
+            <div class="col-md-4">
+              <p><strong>{{ term.long_name }}</strong></p>
+              {% for value in term.values.all %}
+                <input type="radio" name="metadata" value="{{ term }}:{{ value }}">{{ value }}</input><br/>
+              {% endfor %}
+              {% if term.freetext %}
+                <input type="checkbox" name="metadata" value="{{ term }}:other:">other</input><br/>
+                other details: <input type="text" name="metadata"></input>
+              {% endif %}
+            </div>
+            <div class="col-md-8">
+              <p>{{ term.help_text }}</p>
+            </div>
+        {% endif %}
+      </div>
+      <hr/>
       {% endfor %}
-      <hr>
+
 
 			<input type="submit" value="Create model description">
 		</form>

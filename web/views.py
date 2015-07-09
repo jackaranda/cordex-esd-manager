@@ -11,7 +11,7 @@ from django.contrib.auth import logout
 
 from profiles.models import Profile
 
-from submissions.models import Model
+from submissions.models import Model, ModelMeta
 from submissions.models import Submission
 
 from experiments.models import Project
@@ -286,5 +286,47 @@ def logout_view(request):
 
 	return HttpResponseRedirect(reverse('index'))
 
+@login_required
+def models_list(request):
 
+	c = {}
+
+	# First see if we already have a profile for this user
+	try:
+		profile = Profile.objects.get(user=request.user)
+	except:
+		profile = None
+
+	# If we have a profile, then we can fetch a list of models
+	if profile:
+		models = Model.objects.filter(contact=profile)
+	else:
+		models = []
+
+	c['user_profile'] = profile
+	c['user_models'] = models
+	c['meta_terms'] = MetaTerm.objects.filter(target='model')
+	
+	return render(request, 'web/models_list.html', c)
+
+@login_required
+def model_edit(request, slug):
+
+	c = {}
+
+	# First see if we already have a profile for this user
+	try:
+		profile = Profile.objects.get(user=request.user)
+	except:
+		profile = None
+
+	model = Model.objects.get(contact=profile, slug=slug)
+
+	c['user_profile'] = profile
+	c['model'] = model
+	c['meta_terms'] = MetaTerm.objects.filter(target='model')
+	c['meta_values'] = ModelMeta.objects.filter(model=model)
+	
+
+	return render(request, 'web/model_edit.html', c)
 

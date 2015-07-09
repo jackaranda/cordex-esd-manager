@@ -1,7 +1,6 @@
 from django.contrib import admin
 from experiments.models import TimePeriod, Project, MetaExperiment, Experiment, Dataset, Variable, ExperimentTimePeriods, ExperimentDatasets, ExperimentVariables
-from experiments.models import MetaCategory, MetaTerm, MetaDependency, MetaValue
-
+from experiments.models import MetaCategory, MetaControlledValue, MetaTerm
 # Register your models here.
 
 class TimePeriodAdmin(admin.ModelAdmin):
@@ -61,13 +60,13 @@ class MetaCategoryAdmin(admin.ModelAdmin):
 	fields = ('slug', 'description')
 	inlines = (MetaTermInline,)
 
-class MetaValueInline(admin.TabularInline):
-	model = MetaValue
+class MetaControlledValueInline(admin.TabularInline):
+	model = MetaControlledValue
 
 class MetaTermAdmin(admin.ModelAdmin):
 	model = MetaTerm
-	fields = ('category', 'name', 'long_name', 'help_text', 'multiple')
-	inlines = (MetaValueInline,)
+	fields = ('category', 'target', 'name', 'long_name', 'help_text', 'multiple', 'freetext')
+	inlines = (MetaControlledValueInline,)
 
 
 admin.site.register(MetaCategory, MetaCategoryAdmin)

@@ -10,6 +10,7 @@ EXPERIMENT_VARIABLE_CATEGORIES = (('forcing', 'Forcing'), ('output', 'Output'))
 TIMEPERIOD_CATEGORIES = (('calibration', 'Calibration period'), ('validation', 'Validation period'))
 FREQUENCIES = (('day', 'daily data'), ('month', 'monthly data'))
 META_DEPENDENCY_CATEGORIES = (('Equal', 'equal'),)
+META_TARGETS = (('model', 'Model'), ('submission', 'Submission'))
 
 
 class TimePeriod(models.Model):
@@ -151,25 +152,23 @@ class MetaCategory(models.Model):
 class MetaTerm(models.Model):
 
 	category = models.ForeignKey(MetaCategory)
+	target = models.CharField(max_length=20, choices=META_TARGETS, default='', blank=True)
+	order = models.IntegerField(default=0)
 	name = models.SlugField()
 	long_name = models.CharField(max_length=100, default="")
 	help_text = models.TextField(default="", blank=True)
 	multiple = models.BooleanField(default=False)
-#	depends_on = models.ForeignKey('ModelMetaDependencies') 
+	freetext = models.BooleanField(default=False)
+	#depends_on = models.ForeignKey('ModelMetaDependencies') 
 
 	def __unicode__(self):
-		return "{}:{}".format(self.category,self.name)
+		return "{}|{}".format(self.category,self.name)
 
-class MetaDependency(models.Model):
-
-	depends_on = models.ForeignKey(MetaTerm, related_name='depended_on')
-	category = models.TextField(choices=META_DEPENDENCY_CATEGORIES)
-	depends_value = models.ForeignKey('MetaValue')
-
-class MetaValue(models.Model):
+class MetaControlledValue(models.Model):
 
 	term = models.ForeignKey(MetaTerm, related_name='values')
 	value = models.CharField(max_length=100)
 
 	def __unicode__(self):
-		return "{}:{}".format(self.term, self.value)
+		return "{}".format(self.value)
+

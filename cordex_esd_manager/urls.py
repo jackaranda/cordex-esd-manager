@@ -14,6 +14,7 @@ router.register(r'meta-experiments', experiment_views.MetaExperimentViewSet)
 router.register(r'experiments', experiment_views.ExperimentViewSet)
 
 router.register(r'models', submission_views.ModelViewSet)
+router.register(r'modelmeta', submission_views.ModelMetaViewSet)
 router.register(r'submissions', submission_views.SubmissionViewSet)
 router.register(r'uploads', submission_views.UploadView)
 
@@ -32,6 +33,9 @@ urlpatterns = patterns('',
     url(r'^submissions/$', 'web.views.user_submissions', name='web-user-submissions'),
     url(r'^submissions/([-\w]+)/([-\w]+)/([-\w]+)$', 'web.views.experiment_submissions', name='web-experiment-submissions'),
     
+    url(r'^models/$', 'web.views.models_list', name='web-models-list'),
+    url(r'^models/([-\w]+)/$', 'web.views.model_edit', name='web-model-edit'),
+
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^api/', include(router.urls, namespace='api')),

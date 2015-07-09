@@ -1,0 +1,104 @@
+{% extends "web/base.html" %}
+
+{% block title %}CORDEX Experiment Manager | Model {{ model.title }} {% endblock %}
+
+{% block content %}
+
+<div class="row">
+<h4>Editing model: <strong>{{ model }}</strong></h4>
+
+  <form action="{% url 'api:model-detail' model.id %}" method="POST" class="model-form">
+    {% csrf_token %}
+    
+    <input type="hidden" name="slug" value="{{ model.slug }}">
+    <input type="hidden" name="title" value="{{ model.title }}">
+    <label for="model-description">Model description</label>
+    <textarea name="description" class="form-control" id="model-description" placeholder="Enter a brief description of the model">{{ model.description }}</textarea>
+
+    <input type="hidden" name="contact" value="{{ user_profile.id }}">
+    <input type="hidden" name="_method" value="PUT">
+    <input type="submit" value="Update description">
+
+  </form>
+
+  <hr>
+  <h3>Model Meta-data</h3>
+
+  {% for term in meta_terms %}
+
+  <form action="{% url 'api:modelmeta-list' %}" method="POST" class="modelmeta-form">
+    {% csrf_token %}
+    <input type="hidden" name="term" value="{{ term.id }}">
+    {{ meta_values[term] }}
+    <div class="row">
+      {% if term.multiple %}
+          <div class="col-md-4">
+            <p><strong>{{ term.long_name }}</strong></p>
+            {% for value in term.values.all %}
+              <input type="checkbox" name="value" value="{{ value }}">{{ value }}</input><br/>
+            {% endfor %}
+          </div>
+          <div class="col-md-8">
+            <p>{{ term.help_text }}</p>
+          </div>
+      {% endif %}
+
+      {% if not term.multiple %}
+          <div class="col-md-4">
+            <p><strong>{{ term.long_name }}</strong></p>
+            {% for value in term.values.all %}
+              <input type="radio" name="value" value="{{ value }}">{{ value }}</input><br/>
+            {% endfor %}
+          </div>
+          <div class="col-md-8">
+            <p>{{ term.help_text }}</p>
+          </div>
+      {% endif %}
+    </div>
+    <hr/>
+  </form>
+  {% endfor %}
+
+</div>
+
+<script>
+
+  $(document).ready(function() {
+
+      $("#model-name").change(function() {
+
+          var title = $("#model-name").val();
+          var slug = getSlug(title);
+          $("#slug-value").html(slug);
+          $("#model-slug").val(slug);
+
+      });
+  
+
+      $(".model-form").submit(function(e) {
+          
+          var formdata = new FormData(e.target);
+          console.log('submitting');
+          var url = $(e.target).attr('action');
+          console.log('url = ' + url);
+          
+          $.ajax({
+              url: url,
+              type: 'POST',
+              data: formdata,
+              contentType: false,
+              processData: false,
+              success: function(res) { 
+                console.log('success!');
+                location.reload();
+              },
+
+          });
+      });
+
+
+  });
+
+</script>
+
+{% endblock %}

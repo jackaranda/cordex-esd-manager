@@ -2,23 +2,24 @@ from rest_framework import serializers
 
 from profiles.models import Profile
 from submissions.models import ModelMeta, Model, Submission, Upload
-from experiments.models import Experiment, MetaValue
+from experiments.models import Experiment, MetaTerm, MetaControlledValue
 
 
 class ModelMetaSerializer(serializers.ModelSerializer):
-	entry = serializers.PrimaryKeyRelatedField(read_only=False, queryset=MetaValue.objects.all())
+	
+	model = serializers.PrimaryKeyRelatedField(read_only=False, queryset=Model.objects.all())
+	term = serializers.PrimaryKeyRelatedField(read_only=False, queryset=MetaTerm.objects.all())
 
 	class Meta:
 		model = ModelMeta
-		fields = ('entry',)
+		fields = ('model', 'term','value')
+
 
 class ModelSerializer(serializers.ModelSerializer):
 
-	metadata = serializers.PrimaryKeyRelatedField(many=True, read_only=False, queryset=MetaValue.objects.all())
-
 	class Meta:
 		model = Model
-		fields = ('slug', 'title', 'description', 'contact', 'metadata')
+		fields = ('id', 'slug', 'title', 'description', 'contact')
 
 
 class SubmissionSerializer(serializers.ModelSerializer):
