@@ -5,6 +5,7 @@
 {% block content %}
 
 <div class="row">
+
 <h4>Editing model: <strong>{{ model }}</strong></h4>
 
   <form action="{% url 'api:model-detail' model.id %}" method="POST" class="model-form">
@@ -17,41 +18,49 @@
 
     <input type="hidden" name="contact" value="{{ user_profile.id }}">
     <input type="hidden" name="_method" value="PUT">
-    <input type="submit" value="Update description">
+    <input type="submit" value="Save description and meta-data">
+    <a href="{% url 'web-models-list' %}">Go back to models list</a>
 
   </form>
 
   <hr>
   <h3>Model Meta-data</h3>
 
-  {% for term in meta_terms %}
-
-  <form action="{% url 'api:modelmeta-list' %}" method="POST" class="modelmeta-form">
+  {% for term in meta_list %}
+  <form action="{% url 'api:modelmeta-detail' term.1.id %}" method="POST" class="modelmeta-form">
     {% csrf_token %}
-    <input type="hidden" name="term" value="{{ term.id }}">
-    {{ meta_values[term] }}
+    <input type="hidden" name="term" value="{{ term.0.id }}">
+    <input type="hidden" name="_method" value="PUT">
     <div class="row">
-      {% if term.multiple %}
+      {% if term.0.multiple %}
           <div class="col-md-4">
-            <p><strong>{{ term.long_name }}</strong></p>
-            {% for value in term.values.all %}
-              <input type="checkbox" name="value" value="{{ value }}">{{ value }}</input><br/>
+            <p><strong>{{ term.0.long_name }}</strong></p>
+            {% for value in term.0.values.all %}
+              {% if value.value in term.1.value%}
+                <input type="checkbox" name="value" checked=True value="{{ value }}">{{ value }}</input><br/>
+              {% else %}
+                <input type="checkbox" name="value" value="{{ value }}">{{ value }}</input><br/>
+              {% endif %}
             {% endfor %}
           </div>
           <div class="col-md-8">
-            <p>{{ term.help_text }}</p>
+            <p>{{ term.0.help_text }}</p>
           </div>
       {% endif %}
 
-      {% if not term.multiple %}
+      {% if not term.0.multiple %}
           <div class="col-md-4">
-            <p><strong>{{ term.long_name }}</strong></p>
-            {% for value in term.values.all %}
-              <input type="radio" name="value" value="{{ value }}">{{ value }}</input><br/>
+            <p><strong>{{ term.0.long_name }}</strong></p>
+            {% for value in term.0.values.all %}
+              {% if value.value in term.1.value %}
+                <input type="radio" name="value" checked=True value="{{ value }}">{{ value }}</input><br/>
+              {% else %}
+                <input type="radio" name="value" value="{{ value }}">{{ value }}</input><br/>
+              {% endif %}
             {% endfor %}
           </div>
           <div class="col-md-8">
-            <p>{{ term.help_text }}</p>
+            <p>{{ term.0.help_text }}</p>
           </div>
       {% endif %}
     </div>
@@ -63,6 +72,48 @@
 
 <script>
 
+function submit_metaterms(model_id) {
+
+  $(".modelmeta-form").each(function(idx, form) {
+    console.log("attempting to submit form");
+    form_array = $(form).serializeArray();
+
+    var url = $(form).attr('action');
+    form_array.push({'name':'model', 'value':model_id});
+
+    // Combined values from multiple selection
+    combined_value = '';
+    for (i = 0; i < form_array.length; i++) {
+      if (form_array[i].name == 'value') combined_value += form_array[i].value + ',';
+    }
+
+    // Construct FormData instance
+    formdata = new FormData()
+    for (i = 0; i < form_array.length; i++) {
+      if (form_array[i].name != 'value') formdata.append(form_array[i].name, form_array[i].value)
+    }
+    formdata.append('value', combined_value);
+
+    console.log(form);
+    console.log(url);
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: formdata,
+        contentType: false,
+        processData: false,
+        success: function(res) {
+          console.log('success!');
+          console.log(res.id);
+        },
+
+    });
+
+
+  });  
+}
+
   $(document).ready(function() {
 
       $("#model-name").change(function() {
@@ -73,7 +124,6 @@
           $("#model-slug").val(slug);
 
       });
-  
 
       $(".model-form").submit(function(e) {
           
@@ -88,12 +138,16 @@
               data: formdata,
               contentType: false,
               processData: false,
-              success: function(res) { 
+              success: function(res) {
                 console.log('success!');
-                location.reload();
+                console.log(res.id);
+                submit_metaterms(res.id);
+                //location.reload();
               },
 
           });
+
+          return false;
       });
 
 

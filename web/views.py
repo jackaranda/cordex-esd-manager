@@ -321,12 +321,25 @@ def model_edit(request, slug):
 		profile = None
 
 	model = Model.objects.get(contact=profile, slug=slug)
+	meta_terms = MetaTerm.objects.filter(target='model')
+	meta_values = ModelMeta.objects.filter(model=model)
+
+	meta_list = []
+	for meta_term in meta_terms:
+		values = filter(lambda v:v.term == meta_term, meta_values)
+		if len(values) > 0:
+			meta_list.append((meta_term, values[0]))
+		else:
+			new_value = ModelMeta(model=model, term=meta_term, value='');
+			new_value.save()
+			meta_list.append((meta_term, new_value))
 
 	c['user_profile'] = profile
 	c['model'] = model
-	c['meta_terms'] = MetaTerm.objects.filter(target='model')
-	c['meta_values'] = ModelMeta.objects.filter(model=model)
-	
+	c['meta_list'] = meta_list
+#	c['meta_terms'] = MetaTerm.objects.filter(target='model')
+#	c['meta_values'] = ModelMeta.objects.filter(model=model)
+
 
 	return render(request, 'web/model_edit.html', c)
 
