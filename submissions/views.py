@@ -19,14 +19,14 @@ class ModelViewSet(viewsets.ModelViewSet):
     """
     queryset = Model.objects.all()
     serializer_class = ModelSerializer
-    permission_classes = [permissions.DjangoModelPermissions]
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class ModelMetaViewSet(viewsets.ModelViewSet):
 
     queryset = ModelMeta.objects.all()
     serializer_class = ModelMetaSerializer
-    permission_classes = [permissions.DjangoModelPermissions]
+    permission_classes = [permissions.IsAuthenticated]
         
 
 class SubmissionViewSet(viewsets.ModelViewSet):

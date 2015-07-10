@@ -172,3 +172,4 @@ class MetaControlledValue(models.Model):
 	def __unicode__(self):
 		return "{}".format(self.value)
 
+
